@@ -11,7 +11,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "atob": "^2.1.2",
     "aws-sdk": "^2.765.0",
+    "axios": "^0.21.0",
     "bcryptjs": "^2.4.3",
     "celebrate": "^13.0.3",
     "class-transformer": "^0.3.1",
@@ -35,7 +37,8 @@
     "ts-node-dev": "^1.0.0-pre.62",
     "tsyringe": "^4.3.0",
     "typeorm": "^0.2.26",
-    "uuidv4": "^6.2.3"
+    "uuidv4": "^6.2.3",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "@babel/cli": "^7.11.6",
@@ -45,6 +48,7 @@
     "@babel/plugin-proposal-decorators": "^7.10.5",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-typescript": "^7.10.4",
+    "@types/atob": "^2.1.2",
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.7",
     "@types/express": "^4.17.8",
@@ -56,6 +60,7 @@
     "@types/passport-google-oauth": "^1.0.41",
     "@types/passport-jwt": "^3.0.3",
     "@types/randomstring": "^1.1.6",
+    "@types/xml2js": "^0.4.7",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
     "babel-plugin-module-resolver": "^4.0.0",
