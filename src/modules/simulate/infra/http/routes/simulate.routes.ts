@@ -5,11 +5,13 @@ import { celebrate, Segments, Joi } from 'celebrate';
 import SimulateController from '../controllers/SimulateController';
 import ConsultProspectController from '../controllers/ConsultProspectController';
 import CreateReservetionController from '../controllers/CreateReservetionController';
+import SendProposalController from '../controllers/SendProposalController';
 
 const simulateRouter = Router();
 const simulateController = new SimulateController();
 const consultProspectController = new ConsultProspectController();
 const createReservetionController = new CreateReservetionController();
+const sendProposalController = new SendProposalController();
 
 simulateRouter.post(
   '/',
@@ -60,6 +62,16 @@ simulateRouter.post(
     },
   }),
   createReservetionController.create,
+);
+
+simulateRouter.post(
+  '/proposal',
+  celebrate({
+    [Segments.BODY]: {
+      proposal_id: Joi.string().required(),
+    },
+  }),
+  sendProposalController.create,
 );
 
 export default simulateRouter;
