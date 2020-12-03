@@ -6,12 +6,14 @@ import SimulateController from '../controllers/SimulateController';
 import ConsultProspectController from '../controllers/ConsultProspectController';
 import CreateReservetionController from '../controllers/CreateReservetionController';
 import SendProposalController from '../controllers/SendProposalController';
+import ComissionsController from '../controllers/ComissionsController';
 
 const simulateRouter = Router();
 const simulateController = new SimulateController();
 const consultProspectController = new ConsultProspectController();
 const createReservetionController = new CreateReservetionController();
 const sendProposalController = new SendProposalController();
+const comissionsController = new ComissionsController();
 
 simulateRouter.post(
   '/',
@@ -72,6 +74,25 @@ simulateRouter.post(
     },
   }),
   sendProposalController.create,
+);
+
+simulateRouter.post(
+  '/comissions',
+  celebrate({
+    [Segments.BODY]: {
+      proposal_id: Joi.string().required(),
+      comissions: Joi.array()
+        .items(
+          Joi.object({
+            type: Joi.string().required(),
+            venc: Joi.string().required(),
+            price: Joi.string().required(),
+          }),
+        )
+        .required(),
+    },
+  }),
+  comissionsController.create,
 );
 
 export default simulateRouter;
