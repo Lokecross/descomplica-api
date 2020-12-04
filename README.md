@@ -16,7 +16,7 @@
     * add conjugue do comprador na sankhya e add arquivos do conjugue
     * envia proposta - compradores
 
-6. Adicionar parcelas com datas de comissões
+6. ~Adicionar parcelas com datas de comissões~
 
 7. ~Enviar proposta~
     * gera proposta

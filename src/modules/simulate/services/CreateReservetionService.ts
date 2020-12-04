@@ -83,6 +83,8 @@ class CreateReservetionService {
         dataCorretor,
       );
 
+      console.log(JSON.stringify(corretorSankhya));
+
       const recordCorretor =
         corretorSankhya?.serviceResponse?.responseBody[0]?.records[0]
           ?.record[0];

@@ -18,7 +18,13 @@ class SimulateService {
               <field>COD_LOTEAMENTO</field>
               <field>VALOR</field>
               <field>COMADM</field>
+              <field>PERCOMADM</field>
+              <field>COMCOR</field>
+              <field>PERCOMCOR</field>
+              <field>COMFRAN</field>
+              <field>PERCOMFRAN</field>
               <field>COMPROP</field>
+              <field>PERCOMPROP</field>
               <field>TXJUROSFINANC</field>
               <field>QTDMINPARC</field>
               <field>QTDMAXPARC</field>
@@ -46,6 +52,12 @@ class SimulateService {
         qtdMinParc: Number(record?.QTDMINPARC[0]),
         qtdMaxParc: Number(record?.QTDMAXPARC[0]),
         period: Number(record?.PERIODICIDADE[0]),
+        admin_price: Number(record?.COMADM[0]),
+        admin_tax: Number(record?.PERCOMADM[0]),
+        broker_price: Number(record?.COMCOR[0]),
+        broker_tax: Number(record?.PERCOMCOR[0]),
+        franchisee_price: Number(record?.COMFRAN[0]),
+        franchisee_tax: Number(record?.PERCOMFRAN[0]),
       };
     } catch (error) {
       throw new AppError(
