@@ -7,6 +7,7 @@ import ConsultProspectController from '../controllers/ConsultProspectController'
 import CreateReservetionController from '../controllers/CreateReservetionController';
 import SendProposalController from '../controllers/SendProposalController';
 import ComissionsController from '../controllers/ComissionsController';
+import ProfessionsController from '../controllers/ProfessionsController';
 
 const simulateRouter = Router();
 const simulateController = new SimulateController();
@@ -14,6 +15,7 @@ const consultProspectController = new ConsultProspectController();
 const createReservetionController = new CreateReservetionController();
 const sendProposalController = new SendProposalController();
 const comissionsController = new ComissionsController();
+const professionsController = new ProfessionsController();
 
 simulateRouter.post(
   '/',
@@ -94,5 +96,7 @@ simulateRouter.post(
   }),
   comissionsController.create,
 );
+
+simulateRouter.get('/professions', professionsController.index);
 
 export default simulateRouter;

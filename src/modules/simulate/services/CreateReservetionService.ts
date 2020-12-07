@@ -83,8 +83,6 @@ class CreateReservetionService {
         dataCorretor,
       );
 
-      console.log(JSON.stringify(corretorSankhya));
-
       const recordCorretor =
         corretorSankhya?.serviceResponse?.responseBody[0]?.records[0]
           ?.record[0];
@@ -190,6 +188,7 @@ class CreateReservetionService {
 
       return { contract_id };
     } catch (error) {
+      console.log(JSON.stringify(error));
       throw new AppError(
         `Sankhya call error: ${
           error.serviceResponse?.statusMessage[0]
