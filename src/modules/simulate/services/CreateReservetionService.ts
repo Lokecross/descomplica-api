@@ -184,9 +184,9 @@ class CreateReservetionService {
 
       const recordContract =
         contract?.serviceResponse?.responseBody[0]?.entities[0]?.entity[0];
-      const contract_id = recordContract?.NUDCPPROP[0];
+      const id = recordContract?.NUDCPPROP[0];
 
-      return { contract_id };
+      return { id };
     } catch (error) {
       console.log(JSON.stringify(error));
       throw new AppError(

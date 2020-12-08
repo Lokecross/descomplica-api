@@ -4,7 +4,7 @@ import AppError from '@shared/errors/AppError';
 import sankhya from '@shared/api/sankhya';
 
 interface IRequest {
-  contract_id: string;
+  proposal_id: string;
   responsible: boolean;
   document: string;
   name: string;
@@ -41,7 +41,7 @@ interface IRequest {
 
 class CreatePayerService {
   public async execute({
-    contract_id,
+    proposal_id,
     responsible,
     document,
     name,
@@ -166,7 +166,7 @@ class CreatePayerService {
                   <NOMEARQ>arquivo.png</NOMEARQ>
                   <CODPARC>${payer_id}</CODPARC>
                   <CODCONTATO></CODCONTATO>
-                  <CODCONTRATO>${contract_id}</CODCONTRATO>
+                  <CODCONTRATO>${proposal_id}</CODCONTRATO>
                   <MODULO>LTV</MODULO>
                   <DOCB64>${rg_b64}</DOCB64>
                 </localFields>
@@ -194,7 +194,7 @@ class CreatePayerService {
                   <NOMEARQ>arquivo.png</NOMEARQ>
                   <CODPARC>${payer_id}</CODPARC>
                   <CODCONTATO></CODCONTATO>
-                  <CODCONTRATO>${contract_id}</CODCONTRATO>
+                  <CODCONTRATO>${proposal_id}</CODCONTRATO>
                   <MODULO>LTV</MODULO>
                   <DOCB64>${cpf_b64}</DOCB64>
                 </localFields>
@@ -222,7 +222,7 @@ class CreatePayerService {
                   <NOMEARQ>arquivo.png</NOMEARQ>
                   <CODPARC>${payer_id}</CODPARC>
                   <CODCONTATO></CODCONTATO>
-                  <CODCONTRATO>${contract_id}</CODCONTRATO>
+                  <CODCONTRATO>${proposal_id}</CODCONTRATO>
                   <MODULO>LTV</MODULO>
                   <DOCB64>${address_b64}</DOCB64>
                 </localFields>
@@ -250,7 +250,7 @@ class CreatePayerService {
                   <NOMEARQ>arquivo.png</NOMEARQ>
                   <CODPARC>${payer_id}</CODPARC>
                   <CODCONTATO></CODCONTATO>
-                  <CODCONTRATO>${contract_id}</CODCONTRATO>
+                  <CODCONTRATO>${proposal_id}</CODCONTRATO>
                   <MODULO>LTV</MODULO>
                   <DOCB64>${marriage_b64}</DOCB64>
                 </localFields>
@@ -276,7 +276,7 @@ class CreatePayerService {
               </entity>
               <dataRow>
                 <localFields>
-                  <NUDCPPROP>${contract_id}</NUDCPPROP>
+                  <NUDCPPROP>${proposal_id}</NUDCPPROP>
                   <CODPARC>${payer_id}</CODPARC>
                   <RESPBOLETO>${responsible ? 'S' : 'N'}</RESPBOLETO>
                   <PARCPROCURADOR></PARCPROCURADOR>
