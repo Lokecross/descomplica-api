@@ -92,13 +92,15 @@ class CreatePayerService {
       `;
 
       const payerCreate: any = await sankhya.post(
-        '/mge/service.sbr?serviceName=CRUDServiceProvider.loadView',
+        '/mge/service.sbr?serviceName=CRUDServiceProvider.saveRecord',
         dataPayerCreate,
       );
 
+      console.log(JSON.stringify(payerCreate));
+
       const recordPayerCreate =
         payerCreate?.serviceResponse?.responseBody[0]?.entities[0]?.entity[0];
-      const payer_id = recordPayerCreate?.COD_PARC[0];
+      const payer_id = recordPayerCreate?.CODCADPAR[0];
 
       const dataPayerEdit = `
         <serviceRequest serviceName="CRUDServiceProvider.saveRecord">

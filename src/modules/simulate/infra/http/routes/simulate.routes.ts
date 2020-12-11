@@ -8,6 +8,7 @@ import CreateReservetionController from '../controllers/CreateReservetionControl
 import SendProposalController from '../controllers/SendProposalController';
 import ComissionsController from '../controllers/ComissionsController';
 import ProfessionsController from '../controllers/ProfessionsController';
+import CreatePayerController from '../controllers/CreatePayerController';
 
 const simulateRouter = Router();
 const simulateController = new SimulateController();
@@ -16,6 +17,7 @@ const createReservetionController = new CreateReservetionController();
 const sendProposalController = new SendProposalController();
 const comissionsController = new ComissionsController();
 const professionsController = new ProfessionsController();
+const createPayerController = new CreatePayerController();
 
 simulateRouter.post(
   '/',
@@ -95,6 +97,48 @@ simulateRouter.post(
     },
   }),
   comissionsController.create,
+);
+
+simulateRouter.post(
+  '/payers',
+  celebrate({
+    [Segments.BODY]: {
+      proposal_id: Joi.string().required(),
+      responsible: Joi.boolean().required(),
+      document: Joi.string().required(),
+      name: Joi.string().required(),
+      village: Joi.string().required(),
+      address: Joi.string().required(),
+      number: Joi.string().allow(''),
+      complement: Joi.string().allow(''),
+      city: Joi.string().required(),
+      state: Joi.string().required(),
+      cep: Joi.string().required(),
+      email: Joi.string().required(),
+      sex: Joi.string().required(),
+      rg: Joi.string().required(),
+      rg_emission: Joi.string().required(),
+      rg_agency: Joi.string().required(),
+      birth: Joi.string().required(),
+      phone: Joi.string().required(),
+      father: Joi.string().required(),
+      mother: Joi.string().required(),
+      profession: Joi.string().required(),
+      marital_status: Joi.string().required(),
+      spouse_name: Joi.string().allow(''),
+      spouse_rg: Joi.string().allow(''),
+      spouse_cpf: Joi.string().allow(''),
+      spouse_birth: Joi.string().allow(''),
+      spouse_email: Joi.string().allow(''),
+      rg_b64: Joi.string().required(),
+      cpf_b64: Joi.string().required(),
+      address_b64: Joi.string().required(),
+      marriage_b64: Joi.string().allow(''),
+      spouse_rg_b64: Joi.string().allow(''),
+      spouse_cpf_b64: Joi.string().allow(''),
+    },
+  }),
+  createPayerController.create,
 );
 
 simulateRouter.get('/professions', professionsController.index);
