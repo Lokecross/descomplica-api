@@ -33,12 +33,12 @@ export default async function ensureAuthenticated(
   };
 
   try {
-    const userEmail = await authenticate[LoggedWith](token);
+    const userId = await authenticate[LoggedWith](token);
 
-    console.log(userEmail);
+    console.log(userId);
 
     req.user = {
-      id: userEmail,
+      id: userId,
     };
 
     return next();

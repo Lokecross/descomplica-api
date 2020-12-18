@@ -10,6 +10,8 @@ import customersRouter from '@modules/customers/infra/http/routes/customers.rout
 
 import simulateRouter from '@modules/simulate/infra/http/routes/simulate.routes';
 
+import brokersRouter from '@modules/brokers/infra/http/routes/brokers.routes';
+
 const routes = Router({ mergeParams: true });
 
 routes.use('/users', usersRouter);
@@ -21,5 +23,7 @@ routes.use('/sessions', sessionsRouter);
 routes.use('/customers', customersRouter);
 
 routes.use('/simulate', simulateRouter);
+
+routes.use('/brokers', brokersRouter);
 
 export default routes;

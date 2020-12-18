@@ -12,6 +12,9 @@ import UserTokensRepository from '@modules/users/infra/typeorm/repositories/User
 import ICustomersRepository from '@modules/customers/repositories/ICustomersRepository';
 import CustomersRepository from '@modules/customers/infra/typeorm/repositories/CustomersRepository';
 
+import IBrokersRepository from '@modules/brokers/repositories/IBrokersRepository';
+import BrokersRepository from '@modules/brokers/infra/typeorm/repositories/BrokersRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -25,4 +28,9 @@ container.registerSingleton<IUsersTokensRepository>(
 container.registerSingleton<ICustomersRepository>(
   'CustomersRepository',
   CustomersRepository,
+);
+
+container.registerSingleton<IBrokersRepository>(
+  'BrokersRepository',
+  BrokersRepository,
 );
