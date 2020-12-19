@@ -1,10 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateUsers1600223322297 implements MigrationInterface {
+export default class CreateEnterprises1608319542316
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'users',
+        name: 'enterprises',
         columns: [
           {
             name: 'id',
@@ -14,27 +15,36 @@ export default class CreateUsers1600223322297 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
+            name: 'sankhya_id',
+            type: 'varchar',
+          },
+          {
             name: 'name',
             type: 'varchar',
           },
           {
-            name: 'email',
-            type: 'varchar',
-            isUnique: true,
-          },
-          {
-            name: 'avatar',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'password',
+            name: 'name_abbreviated',
             type: 'varchar',
           },
           {
-            name: 'onesignal_id',
+            name: 'city',
             type: 'varchar',
-            isNullable: true,
+          },
+          {
+            name: 'uf',
+            type: 'varchar',
+          },
+          {
+            name: 'village',
+            type: 'varchar',
+          },
+          {
+            name: 'reservation_amount',
+            type: 'varchar',
+          },
+          {
+            name: 'reservation_timer',
+            type: 'varchar',
           },
           {
             name: 'created_at',
@@ -52,6 +62,6 @@ export default class CreateUsers1600223322297 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('users');
+    await queryRunner.dropTable('enterprises');
   }
 }

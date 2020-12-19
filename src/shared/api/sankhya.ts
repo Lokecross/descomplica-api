@@ -17,7 +17,7 @@ const xmlToJson = (xmlData: string): any => {
 };
 
 const sankhya = axios.create({
-  baseURL: 'http://179.185.76.202:9697/',
+  baseURL: process.env.SANKHYA_URL,
   headers: {
     'Content-Type': 'text/xml;charset=ISO-8859-1',
   },
@@ -36,14 +36,14 @@ sankhya.interceptors.response.use(
         const dataLogin = `
           <serviceRequest serviceName="MobileLoginSP.login">
             <requestBody>
-              <NOMUSU>facilita</NOMUSU>
-              <INTERNO2>5da71a4c8f998f2db08cbe96cb05c25d</INTERNO2>
+              <NOMUSU>${process.env.SANKHYA_USERNAME}</NOMUSU>
+              <INTERNO2>${process.env.SANKHYA_PASSWORD}</INTERNO2>
             </requestBody>
           </serviceRequest>
         `;
 
         const { data: dataResponseLogin } = await axios.post(
-          'http://179.185.76.202:9697/mge/service.sbr?serviceName=MobileLoginSP.login',
+          `${process.env.SANKHYA_URL}/mge/service.sbr?serviceName=MobileLoginSP.login`,
           dataLogin,
           config,
         );

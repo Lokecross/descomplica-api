@@ -4,27 +4,26 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
-@Entity('users')
-class User {
+import User from '@modules/users/infra/typeorm/entities/User';
+
+@Entity('notifications')
+class Notification {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  name: string;
+  heading: string;
 
   @Column()
-  email: string;
+  content: string;
 
-  @Column()
-  password: string;
-
-  @Column()
-  avatar: string;
-
-  @Column({ nullable: true })
-  onesignal_id?: string;
+  @ManyToMany(() => User)
+  @JoinTable()
+  users: User[];
 
   @CreateDateColumn()
   created_at: Date;
@@ -33,4 +32,4 @@ class User {
   updated_at: Date;
 }
 
-export default User;
+export default Notification;

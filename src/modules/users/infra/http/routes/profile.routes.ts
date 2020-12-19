@@ -4,13 +4,16 @@ import { celebrate, Segments, Joi } from 'celebrate';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 
 import ProfileController from '../controllers/ProfileController';
+import OnesignalController from '../controllers/OnesignalController';
 
 const profileRouter = Router();
 const profileController = new ProfileController();
+const onesignalController = new OnesignalController();
 
 profileRouter.use(ensureAuthenticated);
 
 profileRouter.get('/', profileController.show);
+
 profileRouter.put(
   '/',
   celebrate({
@@ -23,6 +26,16 @@ profileRouter.put(
     },
   }),
   profileController.update,
+);
+
+profileRouter.patch(
+  '/onesignal',
+  celebrate({
+    [Segments.BODY]: {
+      onesignal_id: Joi.string().required(),
+    },
+  }),
+  onesignalController.update,
 );
 
 export default profileRouter;

@@ -35,8 +35,6 @@ export default async function ensureAuthenticated(
   try {
     const userId = await authenticate[LoggedWith](token);
 
-    console.log(userId);
-
     req.user = {
       id: userId,
     };
