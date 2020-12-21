@@ -14,6 +14,9 @@ class Lot {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column()
+  enterpriseId: string;
+
   @ManyToOne(() => Enterprise, enterprise => enterprise.lots)
   enterprise: Enterprise;
 

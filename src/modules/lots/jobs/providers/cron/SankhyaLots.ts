@@ -7,7 +7,7 @@ import sankhya from '@shared/api/sankhya';
 import CreateLotService from '@modules/lots/services/CreateLotService';
 import FindLotSankhyaIdService from '@modules/lots/services/FindLotSankhyaIdService';
 import UpdateLotService from '@modules/lots/services/UpdateLotService';
-import FindEnterpriseSankhyaIdService from '@modules/enterprises/services/FindEnterpriseSankhyaIdService';
+import ListEnterprisesService from '@modules/enterprises/services/ListEnterprisesService';
 
 const job = new CronJob(
   '0 * * * * *',
@@ -18,43 +18,9 @@ const job = new CronJob(
         FindLotSankhyaIdService,
       );
       const updateLotService = container.resolve(UpdateLotService);
-      const findEnterpriseSankhyaIdService = container.resolve(
-        FindEnterpriseSankhyaIdService,
-      );
+      const listEnterprisesService = container.resolve(ListEnterprisesService);
 
-      const dataEnterprises = `
-        <serviceRequest serviceName="CRUDServiceProvider.loadView">
-          <requestBody>
-            <query viewName="V_FACILITA_LOTEAMENTOS" orderBy="DESCRICAO">
-              <fields>
-                <field>COD_LOTEAMENTO</field>
-                <field>DESCRICAO</field>
-                <field>DESCRICAO_ABREV</field>
-                <field>CIDADE</field>
-                <field>UF</field>
-                <field>BAIRRO</field>
-                <field>QTD_RESERVA_CORRETOR</field>
-                <field>TEMPO_RESERVA</field>
-              </fields>
-            </query>
-          </requestBody>
-        </serviceRequest>
-      `;
-
-      const enterprisesResponse: any = await sankhya.post(
-        '/mge/service.sbr?serviceName=CRUDServiceProvider.loadView',
-        dataEnterprises,
-      );
-
-      type enterprisesTypes = {
-        sankhya_id: string;
-      };
-
-      const enterprises: enterprisesTypes[] = enterprisesResponse.serviceResponse.responseBody[0].records[0].record.map(
-        (item: any) => ({
-          sankhya_id: item.COD_LOTEAMENTO[0],
-        }),
-      );
+      const enterprises = await listEnterprisesService.execute();
 
       enterprises.forEach(item => {
         const doEach = async () => {
@@ -133,13 +99,9 @@ const job = new CronJob(
               note: string;
             };
 
-            const enterprise = await findEnterpriseSankhyaIdService.execute({
-              sankhya_id: item.sankhya_id,
-            });
-
             const lots: lotsTypes[] = lotsResponse.serviceResponse.responseBody[0].records[0].record.map(
               (itemLot: any) => ({
-                enterpriseId: enterprise.id,
+                enterpriseId: item.id,
                 sankhya_id: itemLot.COD_LOTE[0],
                 enterprise_sankhya_id: itemLot.COD_LOTEAMENTO[0],
                 name: itemLot.LOTE[0],
@@ -179,8 +141,12 @@ const job = new CronJob(
                     id: brokerExists.id,
                     ...itemLot,
                   });
-                } catch (error) {
-                  await createLotService.execute(itemLot);
+                } catch {
+                  try {
+                    await createLotService.execute(itemLot);
+                  } catch (err) {
+                    console.log(err);
+                  }
                 }
               };
 

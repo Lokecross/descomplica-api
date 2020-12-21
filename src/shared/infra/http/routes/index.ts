@@ -10,6 +10,7 @@ import brokersRouter from '@modules/brokers/infra/http/routes/brokers.routes';
 import notificationsRouter from '@modules/notifications/infra/http/routes/notifications.routes';
 import enterprisesRouter from '@modules/enterprises/infra/http/routes/enterprises.routes';
 import lotsRouter from '@modules/lots/infra/http/routes/lots.routes';
+import professionsRouter from '@modules/professions/infra/http/routes/professions.routes';
 
 const routes = Router({ mergeParams: true });
 
@@ -23,5 +24,6 @@ routes.use('/brokers', brokersRouter);
 routes.use('/notifications', notificationsRouter);
 routes.use('/enterprises', enterprisesRouter);
 routes.use('/lots', lotsRouter);
+routes.use('/professions', professionsRouter);
 
 export default routes;

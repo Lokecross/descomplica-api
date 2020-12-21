@@ -24,6 +24,9 @@ import EnterprisesRepository from '@modules/enterprises/infra/typeorm/repositori
 import ILotsRepository from '@modules/lots/repositories/ILotsRepository';
 import LotsRepository from '@modules/lots/infra/typeorm/repositories/LotsRepository';
 
+import IProfessionsRepository from '@modules/professions/repositories/IProfessionsRepository';
+import ProfessionsRepository from '@modules/professions/infra/typeorm/repositories/ProfessionsRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -55,3 +58,8 @@ container.registerSingleton<IEnterprisesRepository>(
 );
 
 container.registerSingleton<ILotsRepository>('LotsRepository', LotsRepository);
+
+container.registerSingleton<IProfessionsRepository>(
+  'ProfessionsRepository',
+  ProfessionsRepository,
+);
