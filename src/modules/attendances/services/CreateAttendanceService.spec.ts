@@ -2,6 +2,7 @@ import FakeEnterprisesRepository from '@modules/enterprises/repositories/fakes/F
 import FakeLotsRepository from '@modules/lots/repositories/fakes/FakeLotsRepository';
 import FakeCustomersRepository from '@modules/customers/repositories/fakes/FakeCustomersRepository';
 import FakeBrokersRepository from '@modules/brokers/repositories/fakes/FakeBrokersRepository';
+import FakeSankhyaProvider from '@shared/container/providers/Sankhya/fakes/FakeSankhyaProvider';
 
 import FakeAttendancesRepository from '../repositories/fakes/FakeAttendancesRepository';
 import CreateAttendanceService from './CreateAttendanceService';
@@ -10,6 +11,7 @@ let fakeEnterprisesRepository: FakeEnterprisesRepository;
 let fakeLotsRepository: FakeLotsRepository;
 let fakeCustomersRepository: FakeCustomersRepository;
 let fakeBrokersRepository: FakeBrokersRepository;
+let fakeSankhyaProvider: FakeSankhyaProvider;
 
 let fakeAttendancesRepository: FakeAttendancesRepository;
 
@@ -24,7 +26,13 @@ describe('CreateAttendance', () => {
 
     fakeAttendancesRepository = new FakeAttendancesRepository();
 
-    createAttendance = new CreateAttendanceService(fakeAttendancesRepository);
+    createAttendance = new CreateAttendanceService(
+      fakeAttendancesRepository,
+      fakeCustomersRepository,
+      fakeLotsRepository,
+      fakeBrokersRepository,
+      fakeSankhyaProvider,
+    );
   });
 
   it('should be able to create a new attendance', async () => {
@@ -68,13 +76,6 @@ describe('CreateAttendance', () => {
       reservation_timer: '48',
     });
 
-    const customer = await fakeCustomersRepository.create({
-      name: 'John Doe',
-      document: '12345678909',
-      email: 'johndoe@gmail.com',
-      phone: '62988888888',
-    });
-
     const broker = await fakeBrokersRepository.create({
       name: 'John Doe',
       cpf: '12345678909',
@@ -87,9 +88,12 @@ describe('CreateAttendance', () => {
 
     const attendance = await createAttendance.execute({
       brokerId: broker.id,
-      customerId: customer.id,
       lotId: lot.id,
       note: 'NOTE',
+      document: '12345678909',
+      email: 'john@doe.com',
+      name: 'John Doe',
+      phone: '62982374123',
     });
 
     expect(attendance).toHaveProperty('id');

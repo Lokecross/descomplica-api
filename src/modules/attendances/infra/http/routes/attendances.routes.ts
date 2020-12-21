@@ -39,10 +39,13 @@ attendancesRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      customerId: Joi.string().required(),
       lotId: Joi.string().required(),
       brokerId: Joi.string().required(),
       note: Joi.string().required(),
+      document: Joi.string().required(),
+      name: Joi.string().required(),
+      email: Joi.string().required(),
+      phone: Joi.string().required(),
     },
   }),
   attendancesController.create,
