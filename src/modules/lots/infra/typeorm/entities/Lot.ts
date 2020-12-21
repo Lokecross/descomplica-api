@@ -5,14 +5,19 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 
+import Attendance from '@modules/attendances/infra/typeorm/entities/Attendance';
 import Enterprise from '@modules/enterprises/infra/typeorm/entities/Enterprise';
 
 @Entity('lots')
 class Lot {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @OneToMany(() => Attendance, attendance => attendance.lot)
+  attendances: Attendance[];
 
   @Column()
   enterpriseId: string;

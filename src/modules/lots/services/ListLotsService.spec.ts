@@ -1,18 +1,33 @@
+import FakeEnterprisesRepository from '@modules/enterprises/repositories/fakes/FakeEnterprisesRepository';
+
 import FakeLotsRepository from '../repositories/fakes/FakeLotsRepository';
 import ListLotsService from './ListLotsService';
 
+let fakeEnterprisesRepository: FakeEnterprisesRepository;
 let fakeLotsRepository: FakeLotsRepository;
 
 let listLots: ListLotsService;
 
 describe('ListLots', () => {
   beforeEach(() => {
+    fakeEnterprisesRepository = new FakeEnterprisesRepository();
     fakeLotsRepository = new FakeLotsRepository();
 
     listLots = new ListLotsService(fakeLotsRepository);
   });
 
   it('should be able to list lots', async () => {
+    const enterprise = await fakeEnterprisesRepository.create({
+      name: 'JARDIM II',
+      city: 'GOIANIA',
+      name_abbreviated: 'JARDIM II',
+      reservation_amount: '1',
+      reservation_timer: '48',
+      sankhya_id: '1',
+      uf: 'GO',
+      village: 'CENTRO',
+    });
+
     const lot = await fakeLotsRepository.create({
       name: 'NOME LOTE',
       address: 'Rua 1',
@@ -39,7 +54,7 @@ describe('ListLots', () => {
       initials_situation: 'VI',
       price: '500000',
       reservation_timer: '48',
-      enterpriseId: '',
+      enterpriseId: enterprise.id,
     });
 
     const lots = await listLots.execute();

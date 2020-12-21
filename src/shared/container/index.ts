@@ -27,6 +27,9 @@ import LotsRepository from '@modules/lots/infra/typeorm/repositories/LotsReposit
 import IProfessionsRepository from '@modules/professions/repositories/IProfessionsRepository';
 import ProfessionsRepository from '@modules/professions/infra/typeorm/repositories/ProfessionsRepository';
 
+import IAttendancesRepository from '@modules/attendances/repositories/IAttendancesRepository';
+import AttendancesRepository from '@modules/attendances/infra/typeorm/repositories/AttendancesRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -62,4 +65,9 @@ container.registerSingleton<ILotsRepository>('LotsRepository', LotsRepository);
 container.registerSingleton<IProfessionsRepository>(
   'ProfessionsRepository',
   ProfessionsRepository,
+);
+
+container.registerSingleton<IAttendancesRepository>(
+  'AttendancesRepository',
+  AttendancesRepository,
 );

@@ -11,6 +11,7 @@ import notificationsRouter from '@modules/notifications/infra/http/routes/notifi
 import enterprisesRouter from '@modules/enterprises/infra/http/routes/enterprises.routes';
 import lotsRouter from '@modules/lots/infra/http/routes/lots.routes';
 import professionsRouter from '@modules/professions/infra/http/routes/professions.routes';
+import attendancesRouter from '@modules/attendances/infra/http/routes/attendances.routes';
 
 const routes = Router({ mergeParams: true });
 
@@ -25,5 +26,6 @@ routes.use('/notifications', notificationsRouter);
 routes.use('/enterprises', enterprisesRouter);
 routes.use('/lots', lotsRouter);
 routes.use('/professions', professionsRouter);
+routes.use('/attendances', attendancesRouter);
 
 export default routes;

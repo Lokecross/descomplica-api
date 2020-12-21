@@ -4,12 +4,18 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+
+import Attendance from '@modules/attendances/infra/typeorm/entities/Attendance';
 
 @Entity('brokers')
 class Broker {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @OneToMany(() => Attendance, attendance => attendance.broker)
+  attendances: Attendance[];
 
   @Column()
   sankhya_id: string;
