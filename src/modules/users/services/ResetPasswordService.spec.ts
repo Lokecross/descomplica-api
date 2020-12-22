@@ -1,5 +1,7 @@
 import AppError from '@shared/errors/AppError';
 
+import FakeBrokersRepository from '@modules/brokers/repositories/fakes/FakeBrokersRepository';
+
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeUsersTokensRepository from '../repositories/fakes/FakeUsersTokenRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
@@ -9,12 +11,14 @@ let fakeUsersRepository: FakeUsersRepository;
 let fakeUsersTokensRepository: FakeUsersTokensRepository;
 let fakeHashProvider: FakeHashProvider;
 let resetPassword: ResetPasswordService;
+let fakeBrokersRepository: FakeBrokersRepository;
 
 describe('ResetPasswordService', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
     fakeUsersTokensRepository = new FakeUsersTokensRepository();
+    fakeBrokersRepository = new FakeBrokersRepository();
 
     resetPassword = new ResetPasswordService(
       fakeUsersRepository,
@@ -24,10 +28,21 @@ describe('ResetPasswordService', () => {
   });
 
   it('should be able to reset the password', async () => {
+    const broker = await fakeBrokersRepository.create({
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      cpf: '12345678909',
+      creci: '34231',
+      creci_uf: 'GO',
+      phone: '62984821238',
+      sankhya_id: '1',
+    });
+
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: '123456',
+      brokerId: broker.id,
     });
 
     const { token } = await fakeUsersTokensRepository.generate(user.id);
@@ -68,10 +83,21 @@ describe('ResetPasswordService', () => {
   });
 
   it('should not be able to reset password if passed more than 2 hours', async () => {
+    const broker = await fakeBrokersRepository.create({
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      cpf: '12345678909',
+      creci: '34231',
+      creci_uf: 'GO',
+      phone: '62984821238',
+      sankhya_id: '1',
+    });
+
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: '123456',
+      brokerId: broker.id,
     });
 
     const { token } = await fakeUsersTokensRepository.generate(user.id);

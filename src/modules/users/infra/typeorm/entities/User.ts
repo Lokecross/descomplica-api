@@ -4,7 +4,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
+
+import Broker from '@modules/brokers/infra/typeorm/entities/Broker';
 
 @Entity('users')
 class User {
@@ -25,6 +29,13 @@ class User {
 
   @Column({ nullable: true })
   onesignal_id?: string;
+
+  @Column()
+  brokerId: string;
+
+  @OneToOne(() => Broker)
+  @JoinColumn()
+  broker: Broker;
 
   @CreateDateColumn()
   created_at: Date;
