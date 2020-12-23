@@ -44,6 +44,7 @@ class ConsultProspectService {
       return {
         prospect_id: record?.COD_PROSPECT[0],
         name: record?.NOME[0],
+        gender: record?.TIPPESSOA[0],
         email: record?.EMAIL[0],
         phone: record?.TELEFONE[0],
       };

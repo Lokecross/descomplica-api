@@ -94,6 +94,7 @@ describe('CreateAttendance', () => {
       email: 'john@doe.com',
       name: 'John Doe',
       phone: '62982374123',
+      gender: 'M',
     });
 
     expect(attendance).toHaveProperty('id');

@@ -13,6 +13,7 @@ class SankhyaProvider implements ISankhyaProvider {
     email: string,
     phone: string,
     note: string,
+    gender: string,
   ): Promise<void> {
     const dataReservation = `
       <serviceRequest serviceName="CRUDServiceProvider.saveRecord">
@@ -27,7 +28,7 @@ class SankhyaProvider implements ISankhyaProvider {
                 <PPRCODIGO></PPRCODIGO>
                 <PPRCPFCNPJ>${document}</PPRCPFCNPJ>
                 <PPRTIPO>F</PPRTIPO>
-                <PPRSEXO>M</PPRSEXO>
+                <PPRSEXO>${gender}</PPRSEXO>
                 <PPRNOME>${name}</PPRNOME>
                 <PPREMAIL>${email}</PPREMAIL>
                 <PPRTELEFONES>${phone}</PPRTELEFONES>

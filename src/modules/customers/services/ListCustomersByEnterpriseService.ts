@@ -4,25 +4,23 @@ import Customer from '../infra/typeorm/entities/Customer';
 import ICustomersRepository from '../repositories/ICustomersRepository';
 
 interface IRequest {
-  document: string;
-  name: string;
-  email: string;
-  phone: string;
-  gender: string;
+  enterprise_id: string;
 }
 
 @injectable()
-class CreateCustomerService {
+class ListCustomersByEnterpriseService {
   constructor(
     @inject('CustomersRepository')
     private customersRepository: ICustomersRepository,
   ) {}
 
-  public async execute(reqData: IRequest): Promise<Customer> {
-    const customer = await this.customersRepository.create(reqData);
+  public async execute({ enterprise_id }: IRequest): Promise<Customer[]> {
+    const customers = await this.customersRepository.listByEnterprise(
+      enterprise_id,
+    );
 
-    return customer;
+    return customers;
   }
 }
 
-export default CreateCustomerService;
+export default ListCustomersByEnterpriseService;

@@ -6,5 +6,6 @@ export default interface ICustomersRepository {
   create(data: ICreateCustomerDTO): Promise<Customer>;
   delete(customer: Customer): Promise<void>;
   list(): Promise<Customer[]>;
+  listByEnterprise(enterpriseId: string): Promise<Customer[]>;
   save(customer: Customer): Promise<Customer>;
 }

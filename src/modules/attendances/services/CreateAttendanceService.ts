@@ -19,6 +19,7 @@ interface IRequest {
   name: string;
   email: string;
   phone: string;
+  gender: string;
 }
 
 @injectable()
@@ -48,6 +49,7 @@ class CreateAttendanceService {
     brokerId,
     lotId,
     note,
+    gender,
   }: IRequest): Promise<Attendance> {
     const lot = await this.lotsRepository.findById(lotId);
 
@@ -70,6 +72,7 @@ class CreateAttendanceService {
         email,
         phone,
         note,
+        gender,
       );
     } catch (error) {
       throw new AppError(error.message);
@@ -85,6 +88,7 @@ class CreateAttendanceService {
       name,
       email,
       phone,
+      gender,
     });
 
     const attendanceCreate = await this.attendancesRepository.create({

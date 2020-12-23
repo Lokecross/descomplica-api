@@ -27,17 +27,21 @@ class AttendancesRepository implements IAttendancesRepository {
   }
 
   public async list(): Promise<Attendance[]> {
-    const attendances = await this.ormRepository.find();
+    const attendances = await this.ormRepository.find({
+      relations: ['customer', 'lot', 'lot.enterprise'],
+    });
 
     return attendances;
   }
 
-  public async listByLot(lotId: string): Promise<Attendance[]> {
-    const attendances = await this.ormRepository.find({
-      where: {
-        lotId,
-      },
-    });
+  public async listByEnterprise(enterpriseId: string): Promise<Attendance[]> {
+    const attendances = await this.ormRepository
+      .createQueryBuilder('attendances')
+      .innerJoinAndSelect('attendances.lot', 'lots')
+      .innerJoinAndSelect('attendances.customer', 'customers')
+      .innerJoinAndSelect('lots.enterprise', 'enterprises')
+      .where('lots.enterpriseId = :enterpriseId', { enterpriseId })
+      .getMany();
 
     return attendances;
   }

@@ -75,6 +75,7 @@ describe('FindAttendance', () => {
       document: '12345678909',
       email: 'johndoe@gmail.com',
       phone: '62988888888',
+      gender: 'M',
     });
 
     const broker = await fakeBrokersRepository.create({

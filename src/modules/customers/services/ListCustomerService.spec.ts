@@ -18,6 +18,7 @@ describe('ListCustomer', () => {
       document: '12345678909',
       email: 'johndoe@gmail.com',
       phone: '62988888888',
+      gender: 'M',
     });
 
     const customers = await listCustomer.execute();

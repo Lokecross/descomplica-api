@@ -29,6 +29,9 @@ class Customer {
   @Column()
   phone: string;
 
+  @Column()
+  gender: string;
+
   @CreateDateColumn()
   created_at: Date;
 

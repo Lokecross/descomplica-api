@@ -5,24 +5,24 @@ import { celebrate, Segments, Joi } from 'celebrate';
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 
 import AttendancesController from '../controllers/AttendancesController';
-import AttendancesByLotController from '../controllers/AttendancesByLotController';
+import AttendancesByEnterpriseController from '../controllers/AttendancesByEnterpriseController';
 
 const attendancesRouter = Router({ mergeParams: true });
 const attendancesController = new AttendancesController();
-const attendancesByLotController = new AttendancesByLotController();
+const attendancesByEnterpriseController = new AttendancesByEnterpriseController();
 
 attendancesRouter.use(ensureAuthenticated);
 
 attendancesRouter.get('/', attendancesController.index);
 
 attendancesRouter.get(
-  '/lot/:lot_id',
+  '/enterprise/:enterprise_id',
   celebrate({
     [Segments.PARAMS]: {
-      lot_id: Joi.string().uuid().required(),
+      enterprise_id: Joi.string().uuid().required(),
     },
   }),
-  attendancesByLotController.index,
+  attendancesByEnterpriseController.index,
 );
 
 attendancesRouter.get(
@@ -46,6 +46,7 @@ attendancesRouter.post(
       name: Joi.string().required(),
       email: Joi.string().required(),
       phone: Joi.string().required(),
+      gender: Joi.string().required(),
     },
   }),
   attendancesController.create,

@@ -34,6 +34,16 @@ class CustomersRepository implements ICustomersRepository {
     return this.customers;
   }
 
+  public async listByEnterprise(enterpriseId: string): Promise<Customer[]> {
+    return this.customers.filter(itemCustomer => {
+      return (
+        itemCustomer.attendances.findIndex(
+          itemAttendance => itemAttendance.lot.enterpriseId === enterpriseId,
+        ) !== -1
+      );
+    });
+  }
+
   public async save(customer: Customer): Promise<Customer> {
     const findIndex = this.customers.findIndex(
       findCustomer => findCustomer.id === customer.id,

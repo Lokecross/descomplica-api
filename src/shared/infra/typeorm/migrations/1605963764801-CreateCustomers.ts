@@ -31,6 +31,10 @@ export default class CreateCustomers1605963764801
             type: 'varchar',
           },
           {
+            name: 'gender',
+            type: 'varchar',
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',

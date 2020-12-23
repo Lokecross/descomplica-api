@@ -5,21 +5,23 @@ import Attendance from '../infra/typeorm/entities/Attendance';
 import IAttendancesRepository from '../repositories/IAttendancesRepository';
 
 interface IRequest {
-  lotId: string;
+  enterpriseId: string;
 }
 
 @injectable()
-class ListAttendancesService {
+class ListAttendancesByEnterpriseService {
   constructor(
     @inject('AttendancesRepository')
     private attendancesRepository: IAttendancesRepository,
   ) {}
 
-  public async execute({ lotId }: IRequest): Promise<Attendance[]> {
-    const attendances = await this.attendancesRepository.listByLot(lotId);
+  public async execute({ enterpriseId }: IRequest): Promise<Attendance[]> {
+    const attendances = await this.attendancesRepository.listByEnterprise(
+      enterpriseId,
+    );
 
     return attendances;
   }
 }
 
-export default ListAttendancesService;
+export default ListAttendancesByEnterpriseService;

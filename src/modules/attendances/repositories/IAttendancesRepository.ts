@@ -5,6 +5,6 @@ export default interface IAttendancesRepository {
   create(data: ICreateAttendanceDTO): Promise<Attendance>;
   findById(id: string): Promise<Attendance | undefined>;
   list(): Promise<Attendance[]>;
-  listByLot(lotId: string): Promise<Attendance[]>;
+  listByEnterprise(enterpriseId: string): Promise<Attendance[]>;
   save(attendance: Attendance): Promise<Attendance>;
 }

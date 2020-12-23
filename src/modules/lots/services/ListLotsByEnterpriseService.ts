@@ -7,7 +7,6 @@ import ILotsRepository from '../repositories/ILotsRepository';
 interface IRequest {
   enterprise_id: string;
 }
-
 @injectable()
 class ListLotsByEnterpriseService {
   constructor(

@@ -4,7 +4,7 @@ import FakeCustomersRepository from '@modules/customers/repositories/fakes/FakeC
 import FakeBrokersRepository from '@modules/brokers/repositories/fakes/FakeBrokersRepository';
 
 import FakeAttendancesRepository from '../repositories/fakes/FakeAttendancesRepository';
-import ListAttendancesService from './ListAttendancesService';
+import ListAttendancesByEnterpriseService from './ListAttendancesByEnterpriseService';
 
 let fakeEnterprisesRepository: FakeEnterprisesRepository;
 let fakeLotsRepository: FakeLotsRepository;
@@ -13,9 +13,9 @@ let fakeBrokersRepository: FakeBrokersRepository;
 
 let fakeAttendancesRepository: FakeAttendancesRepository;
 
-let listAttendances: ListAttendancesService;
+let listAttendancesByEnterprise: ListAttendancesByEnterpriseService;
 
-describe('ListAttendances', () => {
+describe('ListAttendancesByEnterprise', () => {
   beforeEach(() => {
     fakeEnterprisesRepository = new FakeEnterprisesRepository();
     fakeLotsRepository = new FakeLotsRepository();
@@ -24,7 +24,9 @@ describe('ListAttendances', () => {
 
     fakeAttendancesRepository = new FakeAttendancesRepository();
 
-    listAttendances = new ListAttendancesService(fakeAttendancesRepository);
+    listAttendancesByEnterprise = new ListAttendancesByEnterpriseService(
+      fakeAttendancesRepository,
+    );
   });
 
   it('should be able to list attendances', async () => {
@@ -93,7 +95,9 @@ describe('ListAttendances', () => {
       note: 'NOTE',
     });
 
-    const attendances = await listAttendances.execute();
+    const attendances = await listAttendancesByEnterprise.execute({
+      enterpriseId: enterprise.id,
+    });
 
     expect(attendances).toStrictEqual([attendance]);
   });

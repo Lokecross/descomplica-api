@@ -3,9 +3,11 @@ import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 
 import CustomersController from '../controllers/CustomersController';
+import CostumersByenterpriseController from '../controllers/CostumersByenterpriseController';
 
 const customersRouter = Router({ mergeParams: true });
 const customersController = new CustomersController();
+const costumersByenterpriseController = new CostumersByenterpriseController();
 
 customersRouter.get('/', customersController.index);
 
@@ -19,6 +21,16 @@ customersRouter.get(
   customersController.show,
 );
 
+customersRouter.get(
+  '/enterprise/:enterprise_id',
+  celebrate({
+    [Segments.PARAMS]: {
+      enterprise_id: Joi.string().uuid().required(),
+    },
+  }),
+  costumersByenterpriseController.index,
+);
+
 customersRouter.post(
   '/',
   celebrate({
@@ -27,6 +39,7 @@ customersRouter.post(
       name: Joi.string().required(),
       email: Joi.string().required(),
       phone: Joi.string().required(),
+      gender: Joi.string().required(),
     },
   }),
   customersController.create,
@@ -43,6 +56,7 @@ customersRouter.patch(
       name: Joi.string(),
       email: Joi.string(),
       phone: Joi.string(),
+      gender: Joi.string(),
     },
   }),
   customersController.update,

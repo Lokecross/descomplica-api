@@ -7,5 +7,6 @@ export default interface INotificationProvider {
     email: string,
     phone: string,
     note: string,
+    gender: string,
   ): Promise<void>;
 }

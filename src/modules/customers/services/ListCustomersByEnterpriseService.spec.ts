@@ -1,35 +1,35 @@
 import FakeEnterprisesRepository from '@modules/enterprises/repositories/fakes/FakeEnterprisesRepository';
 import FakeLotsRepository from '@modules/lots/repositories/fakes/FakeLotsRepository';
-import FakeCustomersRepository from '@modules/customers/repositories/fakes/FakeCustomersRepository';
 import FakeBrokersRepository from '@modules/brokers/repositories/fakes/FakeBrokersRepository';
+import FakeAttendancesRepository from '@modules/attendances/repositories/fakes/FakeAttendancesRepository';
 
-import FakeAttendancesRepository from '../repositories/fakes/FakeAttendancesRepository';
-import ListAttendancesByLotService from './ListAttendancesByLotService';
+import FakeCustomersRepository from '../repositories/fakes/FakeCustomersRepository';
+import ListCustomersByEnterpriseService from './ListCustomersByEnterpriseService';
 
 let fakeEnterprisesRepository: FakeEnterprisesRepository;
 let fakeLotsRepository: FakeLotsRepository;
-let fakeCustomersRepository: FakeCustomersRepository;
 let fakeBrokersRepository: FakeBrokersRepository;
-
 let fakeAttendancesRepository: FakeAttendancesRepository;
 
-let listAttendancesByLot: ListAttendancesByLotService;
+let fakeCustomersRepository: FakeCustomersRepository;
 
-describe('ListAttendancesByLot', () => {
+let listCustomersByEnterprise: ListCustomersByEnterpriseService;
+
+describe('ListCustomersByEnterprise', () => {
   beforeEach(() => {
     fakeEnterprisesRepository = new FakeEnterprisesRepository();
     fakeLotsRepository = new FakeLotsRepository();
-    fakeCustomersRepository = new FakeCustomersRepository();
     fakeBrokersRepository = new FakeBrokersRepository();
-
     fakeAttendancesRepository = new FakeAttendancesRepository();
 
-    listAttendancesByLot = new ListAttendancesByLotService(
-      fakeAttendancesRepository,
+    fakeCustomersRepository = new FakeCustomersRepository();
+
+    listCustomersByEnterprise = new ListCustomersByEnterpriseService(
+      fakeCustomersRepository,
     );
   });
 
-  it('should be able to list attendances', async () => {
+  it('should be able to list customers', async () => {
     const enterprise = await fakeEnterprisesRepository.create({
       name: 'JARDIM II',
       city: 'GOIANIA',
@@ -70,13 +70,6 @@ describe('ListAttendancesByLot', () => {
       reservation_timer: '48',
     });
 
-    const customer = await fakeCustomersRepository.create({
-      name: 'John Doe',
-      document: '12345678909',
-      email: 'johndoe@gmail.com',
-      phone: '62988888888',
-    });
-
     const broker = await fakeBrokersRepository.create({
       name: 'John Doe',
       cpf: '12345678909',
@@ -87,17 +80,25 @@ describe('ListAttendancesByLot', () => {
       sankhya_id: '1',
     });
 
-    const attendance = await fakeAttendancesRepository.create({
+    const customer = await fakeCustomersRepository.create({
+      name: 'John Doe',
+      document: '12345678909',
+      email: 'johndoe@gmail.com',
+      phone: '62988888888',
+      gender: 'M',
+    });
+
+    await fakeAttendancesRepository.create({
       brokerId: broker.id,
-      customerId: customer.id,
       lotId: lot.id,
       note: 'NOTE',
+      customerId: customer.id,
     });
 
-    const attendances = await listAttendancesByLot.execute({
-      lotId: lot.id,
+    const customers = await listCustomersByEnterprise.execute({
+      enterprise_id: enterprise.id,
     });
 
-    expect(attendances).toStrictEqual([attendance]);
+    expect(customers).toStrictEqual([customer]);
   });
 });

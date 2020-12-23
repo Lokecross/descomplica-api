@@ -30,8 +30,10 @@ class FakeAttendancesRepository implements IAttendancesRepository {
     return this.attendances;
   }
 
-  public async listByLot(lotId: string): Promise<Attendance[]> {
-    return this.attendances.filter(item => item.lotId === lotId);
+  public async listByEnterprise(enterpriseId: string): Promise<Attendance[]> {
+    return this.attendances.filter(
+      item => item.lot.enterpriseId === enterpriseId,
+    );
   }
 
   public async save(attendance: Attendance): Promise<Attendance> {
