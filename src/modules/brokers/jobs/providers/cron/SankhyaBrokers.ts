@@ -85,7 +85,7 @@ const job = new CronJob(
         doEach();
       });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   },
   null,

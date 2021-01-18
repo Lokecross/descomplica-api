@@ -2,17 +2,17 @@ import { sign } from 'jsonwebtoken';
 
 import { injectable, inject } from 'tsyringe';
 
+import { OAuth2Client } from 'google-auth-library';
+
 import authConfig from '@config/auth';
 
 import AppError from '@shared/errors/AppError';
 
 import User from '@modules/users/infra/typeorm/entities/User';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
-  email: string;
-  password: string;
+  googleToken: string;
 }
 
 interface IResponse {
@@ -21,28 +21,27 @@ interface IResponse {
 }
 
 @injectable()
-class AuthenticateUserService {
+class AuthenticateUserGoogleService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
-
-    @inject('HashProvider')
-    private hashProvider: IHashProvider,
   ) {}
 
-  public async execute({ email, password }: IRequest): Promise<IResponse> {
-    const user = await this.usersRepository.findByEmail(email);
+  public async execute({ googleToken }: IRequest): Promise<IResponse> {
+    const oAuth2Client = new OAuth2Client();
 
-    if (!user) {
-      throw new AppError('Incorrect email/password combination', 401);
-    }
+    const google = await oAuth2Client.verifyIdToken({
+      idToken: googleToken,
+      audience: [
+        '666222736026-9onr8rf3s2dj71evtk69o9ted17fn68p.apps.googleusercontent.com',
+      ],
+    });
 
-    const passwordMatched = await this.hashProvider.compareHash(
-      password,
-      user.password,
+    const user = await this.usersRepository.findByEmail(
+      google.getPayload().email,
     );
 
-    if (!passwordMatched) {
+    if (!user) {
       throw new AppError('Incorrect email/password combination', 401);
     }
 
@@ -60,4 +59,4 @@ class AuthenticateUserService {
   }
 }
 
-export default AuthenticateUserService;
+export default AuthenticateUserGoogleService;

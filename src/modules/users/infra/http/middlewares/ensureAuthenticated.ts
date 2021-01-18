@@ -1,9 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
 
+import { verify } from 'jsonwebtoken';
+
 import AppError from '@shared/errors/AppError';
 
-import googleAuthenticate from './googleAuthenticate';
-import localAuthenticate from './localAuthenticate';
+import authConfig from '@config/auth';
+
+interface ITokenPayload {
+  iat: number;
+  exp: number;
+  sub: string;
+  id: string;
+  email: string;
+}
 
 export default async function ensureAuthenticated(
   req: Request,
@@ -11,36 +20,24 @@ export default async function ensureAuthenticated(
   next: NextFunction,
 ): Promise<void> {
   const Authorization = req.headers.authorization;
-  const LoggedWith = req.headers.loggedwith as 'Google' | 'Local';
-
-  if (!LoggedWith) {
-    throw new AppError('LoggedWith is missing', 401);
-  }
 
   if (!Authorization) {
     throw new AppError('JWT token is missing', 401);
   }
 
-  if (LoggedWith !== 'Google' && LoggedWith !== 'Local') {
-    throw new AppError('LoggedWith is invalid', 401);
-  }
-
   const [, token] = Authorization.split(' ');
 
-  const authenticate = {
-    Google: googleAuthenticate,
-    Local: localAuthenticate,
-  };
-
   try {
-    const userId = await authenticate[LoggedWith](token);
+    const decoded = verify(token, authConfig.jwt.secret);
+
+    const { id } = decoded as ITokenPayload;
 
     req.user = {
-      id: userId,
+      id,
     };
 
     return next();
   } catch (error) {
-    throw new AppError('Authenticate failed', 401);
+    throw new AppError('Invalid JWT token', 401);
   }
 }

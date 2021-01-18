@@ -145,7 +145,7 @@ const job = new CronJob(
                   try {
                     await createLotService.execute(itemLot);
                   } catch (err) {
-                    console.log(err);
+                    // console.log(err);
                   }
                 }
               };
@@ -160,7 +160,7 @@ const job = new CronJob(
         doEach();
       });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   },
   null,

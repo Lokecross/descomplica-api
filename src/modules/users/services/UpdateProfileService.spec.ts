@@ -44,7 +44,6 @@ describe('UpdateProfile', () => {
     const updatedUser = await updateProfile.execute({
       user_id: user.id,
       name: 'John Trê',
-      email: 'johntre@example.com',
     });
 
     expect(updatedUser.name).toBe('John Trê');
@@ -56,7 +55,6 @@ describe('UpdateProfile', () => {
       updateProfile.execute({
         user_id: 'non-existing-user-id',
         name: 'John Doe',
-        email: 'johndoe@example.com',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -90,7 +88,6 @@ describe('UpdateProfile', () => {
       updateProfile.execute({
         user_id: user.id,
         name: 'John Doe',
-        email: 'johndoe@example.com',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -116,7 +113,6 @@ describe('UpdateProfile', () => {
     const updatedUser = await updateProfile.execute({
       user_id: user.id,
       name: 'John Trê',
-      email: 'johntre@example.com',
       old_password: '123456',
       password: '123123',
     });
@@ -146,7 +142,6 @@ describe('UpdateProfile', () => {
       updateProfile.execute({
         user_id: user.id,
         name: 'John Trê',
-        email: 'johntre@example.com',
         password: '123123',
       }),
     ).rejects.toBeInstanceOf(AppError);
@@ -174,7 +169,6 @@ describe('UpdateProfile', () => {
       updateProfile.execute({
         user_id: user.id,
         name: 'John Trê',
-        email: 'johntre@example.com',
         old_password: 'wrong-old-password',
         password: '123123',
       }),
