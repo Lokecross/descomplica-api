@@ -51,4 +51,4 @@ jobs:
             cd ~/app/descomplica-api
             yarn
             ./node_modules/.bin/typeorm migration:run
-            pm2 restart ics
+            pm2 restart descomplica
