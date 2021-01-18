@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.4
+        with:
+          node-version: 14.15.4
+          
+      # Instalar dependencias
+      - name: Install dependencies
+        run: yarn
+        
+      # Executar build
+      - name: Run build
+        run: yarn build
+   
+      # Copiar codigo para dentro da digital ocean
+      - name: Copy code to digital ocean
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          source: ".,!node_modules"
+          target: "~/app/descomplica-api"
+    
+      # Executar yarn na digital ocean
+      # Executar as migrations do typeorm
+      # Restarta o servidor node
+      - name: Install dependencies, execute migrations and restart node server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/app/descomplica-api
+            yarn
+            ./node_modules/.bin/typeorm migration:run
+            pm2 restart ics
