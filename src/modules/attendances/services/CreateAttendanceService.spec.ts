@@ -1,3 +1,4 @@
+import FakeAuditionsRepository from '@modules/users/repositories/fakes/FakeAuditionsRepository';
 import FakeEnterprisesRepository from '@modules/enterprises/repositories/fakes/FakeEnterprisesRepository';
 import FakeLotsRepository from '@modules/lots/repositories/fakes/FakeLotsRepository';
 import FakeCustomersRepository from '@modules/customers/repositories/fakes/FakeCustomersRepository';
@@ -12,6 +13,7 @@ let fakeLotsRepository: FakeLotsRepository;
 let fakeCustomersRepository: FakeCustomersRepository;
 let fakeBrokersRepository: FakeBrokersRepository;
 let fakeSankhyaProvider: FakeSankhyaProvider;
+let fakeAuditionsRepository: FakeAuditionsRepository;
 
 let fakeAttendancesRepository: FakeAttendancesRepository;
 
@@ -23,6 +25,7 @@ describe('CreateAttendance', () => {
     fakeLotsRepository = new FakeLotsRepository();
     fakeCustomersRepository = new FakeCustomersRepository();
     fakeBrokersRepository = new FakeBrokersRepository();
+    fakeAuditionsRepository = new FakeAuditionsRepository();
 
     fakeAttendancesRepository = new FakeAttendancesRepository();
 
@@ -30,7 +33,9 @@ describe('CreateAttendance', () => {
       fakeAttendancesRepository,
       fakeCustomersRepository,
       fakeLotsRepository,
+      fakeEnterprisesRepository,
       fakeBrokersRepository,
+      fakeAuditionsRepository,
       fakeSankhyaProvider,
     );
   });

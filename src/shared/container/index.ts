@@ -31,6 +31,9 @@ import ProfessionsRepository from '@modules/professions/infra/typeorm/repositori
 import IAttendancesRepository from '@modules/attendances/repositories/IAttendancesRepository';
 import AttendancesRepository from '@modules/attendances/infra/typeorm/repositories/AttendancesRepository';
 
+import IAuditionsRepository from '@modules/users/repositories/IAuditionsRepository';
+import AuditionsRepository from '@modules/users/infra/typeorm/repositories/AuditionsRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -71,4 +74,9 @@ container.registerSingleton<IProfessionsRepository>(
 container.registerSingleton<IAttendancesRepository>(
   'AttendancesRepository',
   AttendancesRepository,
+);
+
+container.registerSingleton<IAuditionsRepository>(
+  'AuditionsRepository',
+  AuditionsRepository,
 );

@@ -4,6 +4,7 @@ import usersRouter from '@modules/users/infra/http/routes/users.routes';
 import passwordRouter from '@modules/users/infra/http/routes/password.routes';
 import profileRouter from '@modules/users/infra/http/routes/profile.routes';
 import sessionsRouter from '@modules/users/infra/http/routes/sessions.routes';
+import auditionsRouter from '@modules/users/infra/http/routes/auditions.routes';
 import customersRouter from '@modules/customers/infra/http/routes/customers.routes';
 import simulateRouter from '@modules/simulate/infra/http/routes/simulate.routes';
 import brokersRouter from '@modules/brokers/infra/http/routes/brokers.routes';
@@ -27,5 +28,6 @@ routes.use('/enterprises', enterprisesRouter);
 routes.use('/lots', lotsRouter);
 routes.use('/professions', professionsRouter);
 routes.use('/attendances', attendancesRouter);
+routes.use('/auditions', auditionsRouter);
 
 export default routes;

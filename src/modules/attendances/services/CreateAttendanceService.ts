@@ -1,11 +1,13 @@
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
+import ISankhyaProvider from '@shared/container/providers/Sankhya/models/ISankhyaProvider';
 
 import ICustomersRepository from '@modules/customers/repositories/ICustomersRepository';
 import ILotsRepository from '@modules/lots/repositories/ILotsRepository';
 import IBrokersRepository from '@modules/brokers/repositories/IBrokersRepository';
-import ISankhyaProvider from '@shared/container/providers/Sankhya/models/ISankhyaProvider';
+import IAuditionsRepository from '@modules/users/repositories/IAuditionsRepository';
+import IEnterprisesRepository from '@modules/enterprises/repositories/IEnterprisesRepository';
 
 import Attendance from '../infra/typeorm/entities/Attendance';
 
@@ -34,8 +36,14 @@ class CreateAttendanceService {
     @inject('LotsRepository')
     private lotsRepository: ILotsRepository,
 
+    @inject('EnterprisesRepository')
+    private enterprisesRepository: IEnterprisesRepository,
+
     @inject('BrokersRepository')
     private brokersRepository: IBrokersRepository,
+
+    @inject('AuditionsRepository')
+    private auditionsRepository: IAuditionsRepository,
 
     @inject('SankhyaProvider')
     private sankhyaProvider: ISankhyaProvider,
@@ -101,6 +109,14 @@ class CreateAttendanceService {
     const attendance = await this.attendancesRepository.findById(
       attendanceCreate.id,
     );
+
+    const enterprise = await this.enterprisesRepository.findById(
+      lot.enterpriseId,
+    );
+
+    await this.auditionsRepository.create({
+      title: `O(a) corretor(a) ${broker.name} criou um atendimento no ${enterprise.name} quadra ${lot.block} lote ${lot.name} para o cliente ${name}`,
+    });
 
     return attendance;
   }
