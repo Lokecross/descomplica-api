@@ -34,7 +34,7 @@ class AuthenticateUserGoogleService {
       idToken: googleToken,
       audience: [
         '666222736026-9onr8rf3s2dj71evtk69o9ted17fn68p.apps.googleusercontent.com',
-        '666222736026-9fj5iltfq383pm5v47kr41ng88894oos.apps.googleusercontent.com',
+        '666222736026-6av4853m7063t19il4mkd37qll0pns0a.apps.googleusercontent.com',
       ],
     });
 
