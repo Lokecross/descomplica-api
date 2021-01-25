@@ -2,6 +2,8 @@ import { Router } from 'express';
 
 import { celebrate, Segments, Joi } from 'celebrate';
 
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
+import ensureAllowed from '@modules/users/infra/http/middlewares/ensureAllowed';
 import CustomersController from '../controllers/CustomersController';
 import CostumersByenterpriseController from '../controllers/CostumersByenterpriseController';
 
@@ -9,7 +11,12 @@ const customersRouter = Router({ mergeParams: true });
 const customersController = new CustomersController();
 const costumersByenterpriseController = new CostumersByenterpriseController();
 
-customersRouter.get('/', customersController.index);
+customersRouter.get(
+  '/',
+  ensureAuthenticated,
+  (...all) => ensureAllowed(...all, ['supervisor', 'manager', 'broker']),
+  customersController.index,
+);
 
 customersRouter.get(
   '/:id',

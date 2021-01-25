@@ -53,6 +53,7 @@ class CreateUserService {
       email,
       password: hashedPassword,
       brokerId: broker.id,
+      role: 'broker',
     });
 
     return user;

@@ -37,6 +37,9 @@ class User {
   @JoinColumn()
   broker: Broker;
 
+  @Column({ nullable: true })
+  role: 'supervisor' | 'manager' | 'broker';
+
   @CreateDateColumn()
   created_at: Date;
 
