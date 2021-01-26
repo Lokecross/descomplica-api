@@ -6,14 +6,16 @@ import {
   UpdateDateColumn,
   OneToOne,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 
 import { Exclude } from 'class-transformer';
 
 import Broker from '@modules/brokers/infra/typeorm/entities/Broker';
+import Team from './Team';
 
 const tuple = <T extends string[]>(...args: T) => args;
-export const roleOptions = tuple('supervisor', 'manager', 'broker');
+export const roleOptions = tuple('manager', 'supervisor', 'broker');
 export type RoleOptions = typeof roleOptions[number];
 
 @Entity('users')
@@ -45,7 +47,16 @@ class User {
   broker: Broker;
 
   @Column({ nullable: true })
-  role: RoleOptions;
+  role: 'manager' | 'supervisor' | 'broker';
+
+  @OneToOne(() => Team, team => team.supervisor)
+  supervisorTeam: Team;
+
+  @Column({ nullable: true })
+  teamId: string;
+
+  @ManyToOne(() => Team, team => team.users)
+  team: Team;
 
   @CreateDateColumn()
   created_at: Date;

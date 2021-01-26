@@ -10,6 +10,9 @@ import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepo
 import IUsersTokensRepository from '@modules/users/repositories/IUsersTokensRepository';
 import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokenRepository';
 
+import ITeamsRepository from '@modules/users/repositories/ITeamsRepository';
+import TeamsRepository from '@modules/users/infra/typeorm/repositories/TeamsRepository';
+
 import ICustomersRepository from '@modules/customers/repositories/ICustomersRepository';
 import CustomersRepository from '@modules/customers/infra/typeorm/repositories/CustomersRepository';
 
@@ -42,6 +45,11 @@ container.registerSingleton<IUsersRepository>(
 container.registerSingleton<IUsersTokensRepository>(
   'UserTokensRepository',
   UserTokensRepository,
+);
+
+container.registerSingleton<ITeamsRepository>(
+  'TeamsRepository',
+  TeamsRepository,
 );
 
 container.registerSingleton<ICustomersRepository>(

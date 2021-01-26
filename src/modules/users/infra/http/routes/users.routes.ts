@@ -6,11 +6,13 @@ import uploadConfig from '@config/upload';
 import { celebrate, Segments, Joi } from 'celebrate';
 
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
+import ensureAllowed from '@modules/users/infra/http/middlewares/ensureAllowed';
 
 import UsersController from '../controllers/UsersController';
 import UserAvatarController from '../controllers/UserAvatarController';
 import UserRoleController from '../controllers/UserRoleController';
-import ensureAllowed from '../middlewares/ensureAllowed';
+import UserTeamController from '../controllers/UserTeamController';
+
 import { roleOptions } from '../../typeorm/entities/User';
 
 const usersRouter = Router();
@@ -18,6 +20,14 @@ const upload = multer(uploadConfig.multer);
 const usersController = new UsersController();
 const userAvatarController = new UserAvatarController();
 const userRoleController = new UserRoleController();
+const userTeamController = new UserTeamController();
+
+usersRouter.get(
+  '/',
+  ensureAuthenticated,
+  (...args) => ensureAllowed(...args, ['manager']),
+  usersController.index,
+);
 
 usersRouter.post(
   '/',
@@ -35,7 +45,7 @@ usersRouter.post(
 usersRouter.patch(
   '/:id/role',
   ensureAuthenticated,
-  (...args) => ensureAllowed(...args, ['supervisor']),
+  (...args) => ensureAllowed(...args, ['manager']),
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.string().uuid().required(),
@@ -47,6 +57,21 @@ usersRouter.patch(
     },
   }),
   userRoleController.update,
+);
+
+usersRouter.patch(
+  '/:id/team',
+  ensureAuthenticated,
+  (...args) => ensureAllowed(...args, ['manager']),
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+    [Segments.BODY]: {
+      teamId: Joi.string().uuid().required(),
+    },
+  }),
+  userTeamController.update,
 );
 
 usersRouter.patch(

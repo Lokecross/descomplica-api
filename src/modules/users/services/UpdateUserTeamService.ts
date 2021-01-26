@@ -4,13 +4,13 @@ import { classToClass } from 'class-transformer';
 
 import AppError from '@shared/errors/AppError';
 
-import User, { RoleOptions } from '../infra/typeorm/entities/User';
+import User from '../infra/typeorm/entities/User';
 import IUsersRepository from '../repositories/IUsersRepository';
 import ITeamsRepository from '../repositories/ITeamsRepository';
 
 interface IRequest {
   user_id: string;
-  role: RoleOptions;
+  teamId: string;
 }
 
 @injectable()
@@ -23,29 +23,26 @@ class UpdateUserRoleService {
     private teamsRepository: ITeamsRepository,
   ) {}
 
-  public async execute({ role, user_id }: IRequest): Promise<User> {
+  public async execute({ teamId, user_id }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
       throw new AppError('User does not exists');
     }
 
-    if (role === user.role) {
-      throw new AppError(`User role is already ${role}`);
+    const checkTeamExists = await this.teamsRepository.findById(teamId);
+
+    if (!checkTeamExists) {
+      throw new AppError('Team does not exists');
     }
 
-    if (role === 'supervisor' || role === 'manager') {
-      await this.teamsRepository.create({
-        supervisorId: user.id,
-      });
+    if (user.role !== 'broker') {
+      throw new AppError('User is not a broker');
     }
 
-    if (role === 'broker' && user.supervisorTeam) {
-      await this.teamsRepository.delete(user.supervisorTeam.id);
-    }
-
-    user.role = role;
+    user.teamId = teamId;
     delete user.supervisorTeam;
+    delete user.team;
 
     await this.usersRepository.save(user);
 
