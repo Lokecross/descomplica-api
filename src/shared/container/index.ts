@@ -13,6 +13,9 @@ import UserTokensRepository from '@modules/users/infra/typeorm/repositories/User
 import ITeamsRepository from '@modules/users/repositories/ITeamsRepository';
 import TeamsRepository from '@modules/users/infra/typeorm/repositories/TeamsRepository';
 
+import IInvitesRepository from '@modules/users/repositories/IInvitesRepository';
+import InvitesRepository from '@modules/users/infra/typeorm/repositories/InvitesRepository';
+
 import ICustomersRepository from '@modules/customers/repositories/ICustomersRepository';
 import CustomersRepository from '@modules/customers/infra/typeorm/repositories/CustomersRepository';
 
@@ -50,6 +53,11 @@ container.registerSingleton<IUsersTokensRepository>(
 container.registerSingleton<ITeamsRepository>(
   'TeamsRepository',
   TeamsRepository,
+);
+
+container.registerSingleton<IInvitesRepository>(
+  'InvitesRepository',
+  InvitesRepository,
 );
 
 container.registerSingleton<ICustomersRepository>(

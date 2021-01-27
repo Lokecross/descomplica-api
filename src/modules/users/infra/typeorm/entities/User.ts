@@ -7,12 +7,17 @@ import {
   OneToOne,
   JoinColumn,
   ManyToOne,
+  OneToMany,
+  ManyToMany,
 } from 'typeorm';
 
 import { Exclude } from 'class-transformer';
 
 import Broker from '@modules/brokers/infra/typeorm/entities/Broker';
+
+import Enterprise from '@modules/enterprises/infra/typeorm/entities/Enterprise';
 import Team from './Team';
+import Invite from './Invite';
 
 const tuple = <T extends string[]>(...args: T) => args;
 export const roleOptions = tuple('manager', 'supervisor', 'broker');
@@ -57,6 +62,12 @@ class User {
 
   @ManyToOne(() => Team, team => team.users)
   team: Team;
+
+  @OneToMany(() => Invite, photo => photo.supervisor)
+  invites: Invite[];
+
+  @ManyToMany(() => Enterprise, enterprise => enterprise.users)
+  enterprises: Enterprise[];
 
   @CreateDateColumn()
   created_at: Date;

@@ -30,9 +30,19 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 
+  public async findByBroker(id: string): Promise<User | undefined> {
+    const user = await this.ormRepository
+      .createQueryBuilder('users')
+      .innerJoinAndSelect('users.broker', 'brokers')
+      .where('users.brokerId = :id', { id })
+      .getOne();
+
+    return user;
+  }
+
   public async list(): Promise<User[]> {
     const users = await this.ormRepository.find({
-      relations: ['broker'],
+      relations: ['broker', 'team', 'enterprises', 'team.supervisor'],
     });
 
     return users;

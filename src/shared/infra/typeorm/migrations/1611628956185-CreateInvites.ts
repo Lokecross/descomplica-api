@@ -21,6 +21,10 @@ export default class CreateInvites1611628956185 implements MigrationInterface {
             default: 'uuid_generate_v4()',
           },
           {
+            name: 'code',
+            type: 'varchar',
+          },
+          {
             name: 'supervisorId',
             type: 'uuid',
           },
@@ -41,7 +45,7 @@ export default class CreateInvites1611628956185 implements MigrationInterface {
     await queryRunner.createForeignKey(
       this.tableName,
       new TableForeignKey({
-        name: 'TeamSupervisor',
+        name: 'InviteSupervisor',
         columnNames: ['supervisorId'],
         referencedColumnNames: ['id'],
         referencedTableName: 'users',
@@ -52,7 +56,7 @@ export default class CreateInvites1611628956185 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey(this.tableName, 'TeamSupervisor');
+    await queryRunner.dropForeignKey(this.tableName, 'InviteSupervisor');
 
     await queryRunner.dropTable(this.tableName);
   }

@@ -7,12 +7,14 @@ import IBrokersRepository from '@modules/brokers/repositories/IBrokersRepository
 import User from '../infra/typeorm/entities/User';
 import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import IInvitesRepository from '../repositories/IInvitesRepository';
 
 interface IRequest {
   name: string;
   email: string;
   password: string;
   cpf: string;
+  code: string;
 }
 
 @injectable()
@@ -24,6 +26,9 @@ class CreateUserService {
     @inject('BrokersRepository')
     private brokersRepository: IBrokersRepository,
 
+    @inject('InvitesRepository')
+    private invitesRepository: IInvitesRepository,
+
     @inject('HashProvider')
     private hashProvider: IHashProvider,
   ) {}
@@ -33,6 +38,7 @@ class CreateUserService {
     email,
     password,
     cpf,
+    code,
   }: IRequest): Promise<User> {
     const broker = await this.brokersRepository.findByCpf(cpf);
 
@@ -46,7 +52,21 @@ class CreateUserService {
       throw new AppError('Email address already used');
     }
 
+    const checkBrokerUsed = await this.usersRepository.findByBroker(broker.id);
+
+    if (checkBrokerUsed) {
+      throw new AppError('CPF is already used');
+    }
+
+    const invite = await this.invitesRepository.findByCode(code);
+
+    if (!invite) {
+      throw new AppError('Code is not valid');
+    }
+
     const hashedPassword = await this.hashProvider.generateHash(password);
+
+    const supervisor = await this.usersRepository.findById(invite.supervisorId);
 
     const user = await this.usersRepository.create({
       name,
@@ -54,6 +74,7 @@ class CreateUserService {
       password: hashedPassword,
       brokerId: broker.id,
       role: 'broker',
+      teamId: supervisor.supervisorTeam.id,
     });
 
     return user;

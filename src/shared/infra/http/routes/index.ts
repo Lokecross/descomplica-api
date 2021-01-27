@@ -14,6 +14,7 @@ import lotsRouter from '@modules/lots/infra/http/routes/lots.routes';
 import professionsRouter from '@modules/professions/infra/http/routes/professions.routes';
 import attendancesRouter from '@modules/attendances/infra/http/routes/attendances.routes';
 import teamsRouter from '@modules/users/infra/http/routes/teams.routes';
+import invitesRouter from '@modules/users/infra/http/routes/invites.routes';
 
 const routes = Router({ mergeParams: true });
 
@@ -31,5 +32,6 @@ routes.use('/professions', professionsRouter);
 routes.use('/attendances', attendancesRouter);
 routes.use('/auditions', auditionsRouter);
 routes.use('/teams', teamsRouter);
+routes.use('/invites', invitesRouter);
 
 export default routes;

@@ -5,9 +5,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 import Lot from '@modules/lots/infra/typeorm/entities/Lot';
+import User from '@modules/users/infra/typeorm/entities/User';
 
 @Entity('enterprises')
 class Enterprise {
@@ -40,6 +43,10 @@ class Enterprise {
 
   @OneToMany(() => Lot, lot => lot.enterprise)
   lots: Lot[];
+
+  @ManyToMany(() => User, user => user.enterprises)
+  @JoinTable()
+  users: User[];
 
   @CreateDateColumn()
   created_at: Date;

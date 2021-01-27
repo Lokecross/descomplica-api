@@ -6,4 +6,5 @@ export default interface ICreateUserDTO {
   password: string;
   brokerId: string;
   role?: RoleOptions;
+  teamId?: string;
 }

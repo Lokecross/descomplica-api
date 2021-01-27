@@ -20,6 +20,12 @@ class UsersRepository implements IUsersRepository {
     return findUser;
   }
 
+  public async findByBroker(id: string): Promise<User | undefined> {
+    const findUser = this.users.find(user => user.brokerId === id);
+
+    return findUser;
+  }
+
   public async list(): Promise<User[]> {
     return this.users;
   }

@@ -26,6 +26,14 @@ class FakeEnterprisesRepository implements IEnterprisesRepository {
     return findEnterprise;
   }
 
+  public async findByIdWithUsers(id: string): Promise<Enterprise | undefined> {
+    const findEnterprise = this.enterprises.find(
+      enterprise => enterprise.id === id,
+    );
+
+    return findEnterprise;
+  }
+
   public async findBySankhyaId(
     sankhya_id: string,
   ): Promise<Enterprise | undefined> {

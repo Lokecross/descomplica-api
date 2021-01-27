@@ -17,7 +17,7 @@ class FindEnterpriseService {
   ) {}
 
   public async execute({ id }: IRequest): Promise<Enterprise> {
-    const enterprise = await this.enterprisesRepository.findById(id);
+    const enterprise = await this.enterprisesRepository.findByIdWithUsers(id);
 
     if (!enterprise) {
       throw new AppError('Enterprise not found', 404);

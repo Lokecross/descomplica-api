@@ -12,6 +12,7 @@ import UsersController from '../controllers/UsersController';
 import UserAvatarController from '../controllers/UserAvatarController';
 import UserRoleController from '../controllers/UserRoleController';
 import UserTeamController from '../controllers/UserTeamController';
+import InvitesController from '../controllers/InvitesController';
 
 import { roleOptions } from '../../typeorm/entities/User';
 
@@ -21,6 +22,7 @@ const usersController = new UsersController();
 const userAvatarController = new UserAvatarController();
 const userRoleController = new UserRoleController();
 const userTeamController = new UserTeamController();
+const invitesController = new InvitesController();
 
 usersRouter.get(
   '/',
@@ -37,9 +39,22 @@ usersRouter.post(
       email: Joi.string().email().required(),
       password: Joi.string().required(),
       cpf: Joi.string().required(),
+      code: Joi.string().required(),
     },
   }),
   usersController.create,
+);
+
+usersRouter.post(
+  '/:id/invite',
+  ensureAuthenticated,
+  (...args) => ensureAllowed(...args, ['manager', 'supervisor']),
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  invitesController.create,
 );
 
 usersRouter.patch(

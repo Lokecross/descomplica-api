@@ -26,6 +26,15 @@ class EnterprisesRepository implements IEnterprisesRepository {
     return enterprise;
   }
 
+  public async findByIdWithUsers(id: string): Promise<Enterprise | undefined> {
+    const enterprise = this.ormRepository.findOne({
+      where: { id },
+      relations: ['users', 'users.broker', 'users.enterprises'],
+    });
+
+    return enterprise;
+  }
+
   public async findBySankhyaId(
     sankhya_id: string,
   ): Promise<Enterprise | undefined> {
@@ -39,7 +48,9 @@ class EnterprisesRepository implements IEnterprisesRepository {
   }
 
   public async list(): Promise<Enterprise[]> {
-    const enterprises = await this.ormRepository.find();
+    const enterprises = await this.ormRepository.find({
+      relations: ['users'],
+    });
 
     return enterprises;
   }
