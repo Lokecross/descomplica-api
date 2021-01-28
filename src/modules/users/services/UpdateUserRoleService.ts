@@ -34,7 +34,10 @@ class UpdateUserRoleService {
       throw new AppError(`User role is already ${role}`);
     }
 
-    if (role === 'supervisor' || role === 'manager') {
+    if (
+      (role === 'supervisor' || role === 'manager') &&
+      user.role === 'broker'
+    ) {
       await this.teamsRepository.create({
         supervisorId: user.id,
       });
