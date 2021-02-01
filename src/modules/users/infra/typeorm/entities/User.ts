@@ -16,6 +16,7 @@ import { Exclude } from 'class-transformer';
 import Broker from '@modules/brokers/infra/typeorm/entities/Broker';
 
 import Enterprise from '@modules/enterprises/infra/typeorm/entities/Enterprise';
+import RequestCustomer from '@modules/customers/infra/typeorm/entities/RequestCustomer';
 import Team from './Team';
 import Invite from './Invite';
 
@@ -68,6 +69,9 @@ class User {
 
   @ManyToMany(() => Enterprise, enterprise => enterprise.users)
   enterprises: Enterprise[];
+
+  @OneToMany(() => RequestCustomer, request => request.user)
+  requestCustomers: RequestCustomer[];
 
   @CreateDateColumn()
   created_at: Date;

@@ -19,6 +19,9 @@ import InvitesRepository from '@modules/users/infra/typeorm/repositories/Invites
 import ICustomersRepository from '@modules/customers/repositories/ICustomersRepository';
 import CustomersRepository from '@modules/customers/infra/typeorm/repositories/CustomersRepository';
 
+import IRequestCustomersRepository from '@modules/customers/repositories/IRequestCustomersRepository';
+import RequestCustomersRepository from '@modules/customers/infra/typeorm/repositories/RequestCustomersRepository';
+
 import IBrokersRepository from '@modules/brokers/repositories/IBrokersRepository';
 import BrokersRepository from '@modules/brokers/infra/typeorm/repositories/BrokersRepository';
 
@@ -63,6 +66,11 @@ container.registerSingleton<IInvitesRepository>(
 container.registerSingleton<ICustomersRepository>(
   'CustomersRepository',
   CustomersRepository,
+);
+
+container.registerSingleton<IRequestCustomersRepository>(
+  'RequestCustomersRepository',
+  RequestCustomersRepository,
 );
 
 container.registerSingleton<IBrokersRepository>(

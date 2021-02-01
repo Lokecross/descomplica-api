@@ -37,6 +37,9 @@ class Attendance {
   @ManyToOne(() => Broker, broker => broker.attendances)
   broker: Broker;
 
+  @Column({ nullable: true })
+  status: string;
+
   @CreateDateColumn()
   created_at: Date;
 

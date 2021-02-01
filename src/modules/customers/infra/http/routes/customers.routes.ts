@@ -3,12 +3,17 @@ import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
+
+import requestCustomerRouter from './request.routes';
+
 import CustomersController from '../controllers/CustomersController';
 import CostumersByenterpriseController from '../controllers/CostumersByenterpriseController';
 
 const customersRouter = Router({ mergeParams: true });
 const customersController = new CustomersController();
 const costumersByenterpriseController = new CostumersByenterpriseController();
+
+customersRouter.use('/request', requestCustomerRouter);
 
 customersRouter.use(ensureAuthenticated);
 

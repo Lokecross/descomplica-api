@@ -6,10 +6,14 @@ import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAut
 
 import AttendancesController from '../controllers/AttendancesController';
 import AttendancesByEnterpriseController from '../controllers/AttendancesByEnterpriseController';
+import ChangeBrokerAttendanceController from '../controllers/ChangeBrokerAttendanceController';
+import ChangeStatusAttendanceController from '../controllers/ChangeStatusAttendanceController';
 
 const attendancesRouter = Router({ mergeParams: true });
 const attendancesController = new AttendancesController();
 const attendancesByEnterpriseController = new AttendancesByEnterpriseController();
+const changeBrokerAttendanceController = new ChangeBrokerAttendanceController();
+const changeStatusAttendanceController = new ChangeStatusAttendanceController();
 
 attendancesRouter.use(ensureAuthenticated);
 
@@ -66,6 +70,32 @@ attendancesRouter.patch(
     },
   }),
   attendancesController.update,
+);
+
+attendancesRouter.patch(
+  '/:id/broker',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+    [Segments.BODY]: {
+      userId: Joi.string().required(),
+    },
+  }),
+  changeBrokerAttendanceController.update,
+);
+
+attendancesRouter.patch(
+  '/:id/status',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+    [Segments.BODY]: {
+      status: Joi.string().required(),
+    },
+  }),
+  changeStatusAttendanceController.update,
 );
 
 export default attendancesRouter;

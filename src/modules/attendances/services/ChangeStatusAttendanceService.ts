@@ -8,11 +8,7 @@ import IAttendancesRepository from '../repositories/IAttendancesRepository';
 
 interface IRequest {
   id: string;
-  customerId: string;
-  lotId: string;
-  brokerId: string;
-  note: string;
-  status?: string;
+  status: string;
 }
 
 @injectable()
@@ -22,14 +18,14 @@ class UpdateAttendanceService {
     private attendancesRepository: IAttendancesRepository,
   ) {}
 
-  public async execute({ id, ...restData }: IRequest): Promise<Attendance> {
+  public async execute({ id, status }: IRequest): Promise<Attendance> {
     const attendance = await this.attendancesRepository.findById(id);
 
     if (!attendance) {
       throw new AppError('Attendance not found', 404);
     }
 
-    Object.assign(attendance, restData);
+    Object.assign(attendance, { status });
 
     const updatedAttendace = await this.attendancesRepository.save(attendance);
 

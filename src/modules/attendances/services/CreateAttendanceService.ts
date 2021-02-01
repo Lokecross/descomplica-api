@@ -104,6 +104,7 @@ class CreateAttendanceService {
       customerId: customer.id,
       lotId,
       note,
+      status: 'in_progress',
     });
 
     const attendance = await this.attendancesRepository.findById(

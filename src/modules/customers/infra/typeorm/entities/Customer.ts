@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 
 import Attendance from '@modules/attendances/infra/typeorm/entities/Attendance';
+import RequestCustomer from './RequestCustomer';
 
 @Entity('customers')
 class Customer {
@@ -31,6 +32,9 @@ class Customer {
 
   @Column()
   gender: string;
+
+  @OneToMany(() => RequestCustomer, request => request.customer)
+  requestCustomers: RequestCustomer[];
 
   @CreateDateColumn()
   created_at: Date;

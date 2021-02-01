@@ -3,4 +3,5 @@ export default interface ICreateAttendanceDTO {
   lotId: string;
   brokerId: string;
   note: string;
+  status?: string;
 }
