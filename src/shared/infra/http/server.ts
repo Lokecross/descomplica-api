@@ -21,7 +21,7 @@ import '@shared/jobs';
 const app = express();
 
 app.use(cors());
-app.use(express.json({ limit: 1048576 }));
+app.use(express.json({ limit: 2000000 }));
 
 app.use('/files', express.static(uploadConfig.uploadsFolder));
 
