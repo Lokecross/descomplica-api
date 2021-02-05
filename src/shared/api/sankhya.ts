@@ -1,5 +1,7 @@
 import xml from 'xml2js';
 import axios from 'axios';
+import iconv from 'iconv-lite';
+import { Buffer } from 'buffer';
 
 const parser = new xml.Parser({});
 
@@ -21,11 +23,16 @@ const sankhya = axios.create({
   headers: {
     'Content-Type': 'text/xml;charset=ISO-8859-1',
   },
+  responseType: 'arraybuffer',
 });
 
 sankhya.interceptors.response.use(
   async response => {
-    const responseJSON = xmlToJson(response.data);
+    const responseDecoded = iconv.decode(
+      Buffer.from(response.data),
+      'ISO-8859-1',
+    );
+    const responseJSON = xmlToJson(responseDecoded);
 
     if (responseJSON.serviceResponse.$.status !== '1') {
       if (responseJSON.serviceResponse.$.status === '3') {
@@ -60,7 +67,11 @@ sankhya.interceptors.response.use(
 
         const { data: dataResponseRetry } = await axios(response.config);
 
-        const responseRetryJSON = xmlToJson(dataResponseRetry);
+        const responseRetryDecoded = iconv.decode(
+          Buffer.from(dataResponseRetry),
+          'ISO-8859-1',
+        );
+        const responseRetryJSON = xmlToJson(responseRetryDecoded);
 
         if (responseRetryJSON.serviceResponse.$.status !== '1') {
           return Promise.reject(responseRetryJSON);

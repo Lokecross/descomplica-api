@@ -18,6 +18,16 @@ class CustomersRepository implements ICustomersRepository {
     return customer;
   }
 
+  public async findByDocument(document: string): Promise<Customer | undefined> {
+    const customer = await this.ormRepository.findOne({
+      where: {
+        document,
+      },
+    });
+
+    return customer;
+  }
+
   public async create(createData: ICreateCustomerDTO): Promise<Customer> {
     const customer = this.ormRepository.create(createData);
 

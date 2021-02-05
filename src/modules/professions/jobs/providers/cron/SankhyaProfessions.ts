@@ -9,7 +9,7 @@ import FindProfessionSankhyaIdService from '@modules/professions/services/FindPr
 import UpdateProfessionService from '@modules/professions/services/UpdateProfessionService';
 
 const job = new CronJob(
-  '0 * * * * *',
+  '0,15,30,45 * * * * *',
   async () => {
     try {
       const createProfessionService = container.resolve(

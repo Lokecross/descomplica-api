@@ -91,13 +91,28 @@ class CreateAttendanceService {
 
     await this.lotsRepository.save(lot);
 
-    const customer = await this.customersRepository.create({
+    const customerExists = await this.customersRepository.findByDocument(
       document,
-      name,
-      email,
-      phone,
-      gender,
-    });
+    );
+
+    if (customerExists) {
+      customerExists.name = name;
+      customerExists.email = email;
+      customerExists.phone = phone;
+      customerExists.gender = gender;
+
+      await this.customersRepository.save(customerExists);
+    }
+
+    const customer =
+      customerExists ||
+      (await this.customersRepository.create({
+        document,
+        name,
+        email,
+        phone,
+        gender,
+      }));
 
     const attendanceCreate = await this.attendancesRepository.create({
       brokerId,

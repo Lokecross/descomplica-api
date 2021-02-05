@@ -3,6 +3,7 @@ import ICreateCustomerDTO from '../dtos/ICreateCustomerDTO';
 
 export default interface ICustomersRepository {
   findById(id: string): Promise<Customer | undefined>;
+  findByDocument(document: string): Promise<Customer | undefined>;
   create(data: ICreateCustomerDTO): Promise<Customer>;
   delete(customer: Customer): Promise<void>;
   list(): Promise<Customer[]>;
