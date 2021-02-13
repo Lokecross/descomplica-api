@@ -3,22 +3,24 @@ import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 
 import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
-import SimulateController from '../controllers/SimulateController';
+import SimulationController from '../controllers/SimulationController';
 import ConsultProspectController from '../controllers/ConsultProspectController';
 import CreateReservetionController from '../controllers/CreateReservetionController';
 import SendProposalController from '../controllers/SendProposalController';
 import ComissionsController from '../controllers/ComissionsController';
 import ProfessionsController from '../controllers/ProfessionsController';
 import CreatePayerController from '../controllers/CreatePayerController';
+import SimulatesController from '../controllers/SimulatesController';
 
 const simulateRouter = Router();
-const simulateController = new SimulateController();
+const simulationController = new SimulationController();
 const consultProspectController = new ConsultProspectController();
 const createReservetionController = new CreateReservetionController();
 const sendProposalController = new SendProposalController();
 const comissionsController = new ComissionsController();
 const professionsController = new ProfessionsController();
 const createPayerController = new CreatePayerController();
+const simulatesController = new SimulatesController();
 
 simulateRouter.use(ensureAuthenticated);
 
@@ -26,10 +28,31 @@ simulateRouter.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      code_id: Joi.string().required(),
+      attendanceId: Joi.string().uuid().required(),
+      lotId: Joi.string().uuid().required(),
     },
   }),
-  simulateController.create,
+  simulatesController.create,
+);
+
+simulateRouter.get(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  simulatesController.show,
+);
+
+simulateRouter.post(
+  '/:id/simulation',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  simulationController.create,
 );
 
 simulateRouter.post(

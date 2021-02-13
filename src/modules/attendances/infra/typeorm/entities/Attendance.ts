@@ -5,11 +5,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 
 import Customer from '@modules/customers/infra/typeorm/entities/Customer';
 import Lot from '@modules/lots/infra/typeorm/entities/Lot';
 import Broker from '@modules/brokers/infra/typeorm/entities/Broker';
+import Simulate from '@modules/simulate/infra/typeorm/entities/Simulate';
 
 @Entity('attendances')
 class Attendance {
@@ -39,6 +41,9 @@ class Attendance {
 
   @Column({ nullable: true })
   status: string;
+
+  @OneToMany(() => Simulate, simulate => simulate.attendance)
+  simulates: Simulate[];
 
   @CreateDateColumn()
   created_at: Date;

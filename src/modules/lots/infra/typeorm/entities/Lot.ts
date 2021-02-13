@@ -10,6 +10,7 @@ import {
 
 import Attendance from '@modules/attendances/infra/typeorm/entities/Attendance';
 import Enterprise from '@modules/enterprises/infra/typeorm/entities/Enterprise';
+import Simulate from '@modules/simulate/infra/typeorm/entities/Simulate';
 
 @Entity('lots')
 class Lot {
@@ -99,6 +100,9 @@ class Lot {
 
   @Column({ nullable: true })
   note: string;
+
+  @OneToMany(() => Simulate, simulate => simulate.attendance)
+  simulates: Simulate[];
 
   @CreateDateColumn()
   created_at: Date;

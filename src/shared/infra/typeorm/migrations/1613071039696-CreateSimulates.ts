@@ -22,37 +22,12 @@ export default class CreateSimulates1613071039696
             default: 'uuid_generate_v4()',
           },
           {
-            name: 'customerId',
+            name: 'attendanceId',
             type: 'uuid',
           },
           {
             name: 'lotId',
             type: 'uuid',
-          },
-          {
-            name: 'is_financed',
-            type: 'boolean',
-            isNullable: true,
-          },
-          {
-            name: 'is_price',
-            type: 'boolean',
-            isNullable: true,
-          },
-          {
-            name: 'period',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'tax',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
-            name: 'deadline',
-            type: 'varchar',
-            isNullable: true,
           },
           {
             name: 'created_at',
@@ -71,10 +46,10 @@ export default class CreateSimulates1613071039696
     await queryRunner.createForeignKey(
       this.tableName,
       new TableForeignKey({
-        name: 'SimulateCustomer',
-        columnNames: ['customerId'],
+        name: 'SimulateAttendance',
+        columnNames: ['attendanceId'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'customers',
+        referencedTableName: 'attendances',
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
       }),
@@ -96,7 +71,7 @@ export default class CreateSimulates1613071039696
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey(this.tableName, 'SimulateLot');
 
-    await queryRunner.dropForeignKey(this.tableName, 'SimulateCustomer');
+    await queryRunner.dropForeignKey(this.tableName, 'SimulateAttendance');
 
     await queryRunner.dropTable(this.tableName);
   }

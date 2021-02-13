@@ -43,6 +43,9 @@ import AttendancesRepository from '@modules/attendances/infra/typeorm/repositori
 import IAuditionsRepository from '@modules/users/repositories/IAuditionsRepository';
 import AuditionsRepository from '@modules/users/infra/typeorm/repositories/AuditionsRepository';
 
+import ISimulatesRepository from '@modules/simulate/repositories/ISimulatesRepository';
+import SimulatesRepository from '@modules/simulate/infra/typeorm/repositories/SimulatesRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -103,4 +106,9 @@ container.registerSingleton<IAttendancesRepository>(
 container.registerSingleton<IAuditionsRepository>(
   'AuditionsRepository',
   AuditionsRepository,
+);
+
+container.registerSingleton<ISimulatesRepository>(
+  'SimulatesRepository',
+  SimulatesRepository,
 );
