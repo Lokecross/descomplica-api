@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import { celebrate, Segments, Joi } from 'celebrate';
 
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 import SimulateController from '../controllers/SimulateController';
 import ConsultProspectController from '../controllers/ConsultProspectController';
 import CreateReservetionController from '../controllers/CreateReservetionController';
@@ -18,6 +19,8 @@ const sendProposalController = new SendProposalController();
 const comissionsController = new ComissionsController();
 const professionsController = new ProfessionsController();
 const createPayerController = new CreatePayerController();
+
+simulateRouter.use(ensureAuthenticated);
 
 simulateRouter.post(
   '/',
@@ -50,7 +53,6 @@ simulateRouter.post(
       name: Joi.string().required(),
       email: Joi.string().required(),
       phone: Joi.string().required(),
-      corretor_cpf: Joi.string().required(),
       lot_id: Joi.string().required(),
       input: Joi.string().allow(null, '').required(),
       price: Joi.string().required(),
@@ -65,6 +67,7 @@ simulateRouter.post(
       installment: Joi.string().allow(null, '').required(),
       tax: Joi.string().allow(null, '').required(),
       is_financed: Joi.boolean().required(),
+      notes: Joi.string().allow(null, '').required(),
     },
   }),
   createReservetionController.create,

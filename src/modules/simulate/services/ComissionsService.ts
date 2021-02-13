@@ -1,7 +1,8 @@
-import atob from 'atob';
+import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
-import sankhya from '@shared/api/sankhya';
+
+import ISankhyaProvider from '@shared/container/providers/Sankhya/models/ISankhyaProvider';
 
 interface IRequest {
   proposal_id: string;
@@ -12,48 +13,24 @@ interface IRequest {
   }>;
 }
 
+@injectable()
 class ComissionsService {
-  public async execute({ proposal_id, comissions }: IRequest): Promise<any> {
-    try {
-      const dataComission = `
-        <serviceRequest serviceName="CRUDServiceProvider.saveRecord">
-          <requestBody>
-            <dataSet rootEntity="AD_DCPCOMISSOES" includePresentationFields="S">
-              <entity path="">
-                <fieldset list="*" />
-              </entity>${comissions.map(
-                item => `
-              <dataRow>
-                <localFields>
-                  <NUDCPPROP>${proposal_id}</NUDCPPROP>
-                  <TIPOCOM>${item.type}</TIPOCOM>
-                  <DTVENC>${item.venc}</DTVENC>
-                  <VLRCOMISSAO>${item.price}</VLRCOMISSAO>
-                </localFields>
-              </dataRow>`,
-              )}
-            </dataSet>
-          </requestBody>
-        </serviceRequest>
-      `;
+  constructor(
+    @inject('SankhyaProvider')
+    private sankhyaProvider: ISankhyaProvider,
+  ) {}
 
-      console.log(dataComission);
+  public async execute({ comissions, proposal_id }: IRequest): Promise<any> {
+    const { data, error } = await this.sankhyaProvider.comissions({
+      comissions,
+      proposal_id,
+    });
 
-      const comission: any = await sankhya.post(
-        '/mge/service.sbr?serviceName=CRUDServiceProvider.saveRecord',
-        dataComission,
-      );
-
-      return comission;
-    } catch (error) {
-      throw new AppError(
-        `Sankhya call error: ${
-          error.serviceResponse?.statusMessage[0]
-            ? atob(error.serviceResponse?.statusMessage[0])
-            : 'network error'
-        }`,
-      );
+    if (error) {
+      throw new AppError(error);
     }
+
+    return data;
   }
 }
 

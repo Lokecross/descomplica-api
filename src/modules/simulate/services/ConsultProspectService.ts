@@ -1,63 +1,43 @@
-import atob from 'atob';
+import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
-import sankhya from '@shared/api/sankhya';
+
+import ISankhyaProvider from '@shared/container/providers/Sankhya/models/ISankhyaProvider';
+import ICustomersRepository from '@modules/customers/repositories/ICustomersRepository';
 
 interface IRequest {
   document: string;
 }
 
+@injectable()
 class ConsultProspectService {
+  constructor(
+    @inject('CustomersRepository')
+    private customersRepository: ICustomersRepository,
+
+    @inject('SankhyaProvider')
+    private sankhyaProvider: ISankhyaProvider,
+  ) {}
+
   public async execute({ document }: IRequest): Promise<any> {
-    const dataSimulate = `
-      <serviceRequest serviceName="CRUDServiceProvider.loadView">
-        <requestBody>
-          <query viewName="V_FACILITA_PROSPECT">
-            <fields>
-              <field>COD_PROSPECT</field>
-              <field>CPF_CNPJ</field>
-              <field>CPF_CNPJ_MASC</field>
-              <field>TIPPESSOA</field>
-              <field>NOME</field>
-              <field>EMAIL</field>
-              <field>TELEFONE</field>
-            </fields>
-            <where>CPF_CNPJ='${document}'</where>
-          </query>
-        </requestBody>
-      </serviceRequest>
-    `;
+    const customer = await this.customersRepository.findByDocument(document);
 
-    try {
-      const simulation: any = await sankhya.post(
-        '/mge/service.sbr?serviceName=CRUDServiceProvider.loadView',
-        dataSimulate,
-      );
-
-      const records = simulation?.serviceResponse?.responseBody[0]?.records[0];
-      const record = records?.record[0];
-
-      if (records === '') {
-        throw new AppError('Prospect does not exists');
-      }
-
+    if (customer) {
       return {
-        prospect_id: record?.COD_PROSPECT[0],
-        name: record?.NOME[0],
-        gender: record?.TIPPESSOA[0],
-        email: record?.EMAIL[0],
-        phone: record?.TELEFONE[0],
+        name: customer.name,
+        gender: customer.gender,
+        email: customer.email,
+        phone: customer.phone,
       };
-    } catch (error) {
-      console.log(error);
-      throw new AppError(
-        `Sankhya call error: ${
-          error.serviceResponse?.statusMessage[0]
-            ? atob(error.serviceResponse?.statusMessage[0])
-            : 'network error'
-        }`,
-      );
     }
+
+    const { data, error } = await this.sankhyaProvider.prospect(document);
+
+    if (error) {
+      throw new AppError(error);
+    }
+
+    return data;
   }
 }
 

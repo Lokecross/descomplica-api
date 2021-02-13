@@ -1,50 +1,30 @@
-import atob from 'atob';
+import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
-import sankhya from '@shared/api/sankhya';
+
+import ISankhyaProvider from '@shared/container/providers/Sankhya/models/ISankhyaProvider';
 
 interface IRequest {
   proposal_id: string;
 }
 
+@injectable()
 class SendProposalService {
+  constructor(
+    @inject('SankhyaProvider')
+    private sankhyaProvider: ISankhyaProvider,
+  ) {}
+
   public async execute({ proposal_id }: IRequest): Promise<any> {
-    const dataSendProposal = `
-      <serviceRequest serviceName="CRUDServiceProvider.saveRecord">
-        <requestBody>
-          <dataSet rootEntity="AD_DCPPROPOSTA" includePresentationFields="S">
-            <entity path="">
-              <fieldset list="*" />
-            </entity>
-            <dataRow>
-              <localFields>
-                <GERPROP>S</GERPROP>
-              </localFields>
-              <key>
-                <NUDCPPROP>${proposal_id}</NUDCPPROP>
-              </key>
-            </dataRow>
-          </dataSet>
-        </requestBody>
-      </serviceRequest>
-    `;
+    const { data, error } = await this.sankhyaProvider.sendProposal({
+      proposal_id,
+    });
 
-    try {
-      const sendProposal: any = await sankhya.post(
-        '/mge/service.sbr?serviceName=CRUDServiceProvider.saveRecord',
-        dataSendProposal,
-      );
-
-      return sendProposal;
-    } catch (error) {
-      throw new AppError(
-        `Sankhya call error: ${
-          error.serviceResponse?.statusMessage[0]
-            ? atob(error.serviceResponse?.statusMessage[0])
-            : 'network error'
-        }`,
-      );
+    if (error) {
+      throw new AppError(error);
     }
+
+    return data;
   }
 }
 
