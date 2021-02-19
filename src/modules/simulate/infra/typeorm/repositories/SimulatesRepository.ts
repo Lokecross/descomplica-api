@@ -22,7 +22,13 @@ class SimulatesRepository implements ISimulatesRepository {
     id: string,
   ): Promise<Simulate | undefined> {
     const simulate = await this.ormRepository.findOne(id, {
-      relations: ['attendance', 'lot', 'lot.enterprise'],
+      relations: [
+        'attendance',
+        'lot',
+        'lot.enterprise',
+        'attendance.customer',
+        'attendance.broker',
+      ],
     });
 
     return simulate;

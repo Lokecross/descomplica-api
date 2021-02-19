@@ -27,6 +27,33 @@ class Simulate {
   @ManyToOne(() => Lot, lot => lot.simulates)
   lot: Lot;
 
+  @Column({ nullable: true })
+  notes: string;
+
+  @Column({ nullable: true })
+  tax: string;
+
+  @Column({ nullable: true })
+  period: string;
+
+  @Column({ nullable: true })
+  deadline: string;
+
+  @Column({ nullable: true })
+  type: string;
+
+  @Column({ nullable: true })
+  price: string;
+
+  @Column({ nullable: true })
+  input: string;
+
+  @Column({ nullable: true })
+  value: string;
+
+  @Column({ nullable: true })
+  reservationId: string;
+
   @CreateDateColumn()
   created_at: Date;
 

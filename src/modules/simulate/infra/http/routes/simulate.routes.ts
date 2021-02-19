@@ -11,6 +11,8 @@ import ComissionsController from '../controllers/ComissionsController';
 import ProfessionsController from '../controllers/ProfessionsController';
 import CreatePayerController from '../controllers/CreatePayerController';
 import SimulatesController from '../controllers/SimulatesController';
+import UpdatePaymentDataController from '../controllers/UpdatePaymentDataController';
+import ReserveController from '../controllers/ReserveController';
 
 const simulateRouter = Router();
 const simulationController = new SimulationController();
@@ -21,6 +23,8 @@ const comissionsController = new ComissionsController();
 const professionsController = new ProfessionsController();
 const createPayerController = new CreatePayerController();
 const simulatesController = new SimulatesController();
+const updatePaymentDataController = new UpdatePaymentDataController();
+const reserveController = new ReserveController();
 
 simulateRouter.use(ensureAuthenticated);
 
@@ -53,6 +57,36 @@ simulateRouter.post(
     },
   }),
   simulationController.create,
+);
+
+simulateRouter.post(
+  '/:id/payment',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+    [Segments.BODY]: {
+      notes: Joi.string().allow(null, ''),
+      tax: Joi.string().allow(null, ''),
+      period: Joi.string().allow(null, ''),
+      deadline: Joi.string().allow(null, ''),
+      type: Joi.string().allow(null, ''),
+      price: Joi.string().allow(null, ''),
+      input: Joi.string().allow(null, ''),
+      value: Joi.string().allow(null, ''),
+    },
+  }),
+  updatePaymentDataController.update,
+);
+
+simulateRouter.post(
+  '/:id/reserve',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  reserveController.update,
 );
 
 simulateRouter.post(
