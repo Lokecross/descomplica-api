@@ -21,6 +21,7 @@ export default class SimulatesController {
 
     const simulate = await showSimulate.execute({
       simulateId: id,
+      ...req.body,
     });
 
     return res.json(simulate);

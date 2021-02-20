@@ -46,6 +46,12 @@ import AuditionsRepository from '@modules/users/infra/typeorm/repositories/Audit
 import ISimulatesRepository from '@modules/simulate/repositories/ISimulatesRepository';
 import SimulatesRepository from '@modules/simulate/infra/typeorm/repositories/SimulatesRepository';
 
+import IPayersRepository from '@modules/simulate/repositories/IPayersRepository';
+import PayersRepository from '@modules/simulate/infra/typeorm/repositories/PayersRepository';
+
+import IComissionsRepository from '@modules/simulate/repositories/IComissionsRepository';
+import ComissionsRepository from '@modules/simulate/infra/typeorm/repositories/ComissionsRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -111,4 +117,14 @@ container.registerSingleton<IAuditionsRepository>(
 container.registerSingleton<ISimulatesRepository>(
   'SimulatesRepository',
   SimulatesRepository,
+);
+
+container.registerSingleton<IPayersRepository>(
+  'PayersRepository',
+  PayersRepository,
+);
+
+container.registerSingleton<IComissionsRepository>(
+  'ComissionsRepository',
+  ComissionsRepository,
 );

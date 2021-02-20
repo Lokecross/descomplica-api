@@ -5,10 +5,13 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 
 import Attendance from '@modules/attendances/infra/typeorm/entities/Attendance';
 import Lot from '@modules/lots/infra/typeorm/entities/Lot';
+import Payer from './Payer';
+import Comission from './Comission';
 
 @Entity('simulates')
 class Simulate {
@@ -53,6 +56,15 @@ class Simulate {
 
   @Column({ nullable: true })
   reservationId: string;
+
+  @Column({ nullable: true })
+  contractId: string;
+
+  @OneToMany(() => Payer, payer => payer.simulate)
+  payers: Payer[];
+
+  @OneToMany(() => Comission, comission => comission.simulate)
+  comissions: Comission[];
 
   @CreateDateColumn()
   created_at: Date;

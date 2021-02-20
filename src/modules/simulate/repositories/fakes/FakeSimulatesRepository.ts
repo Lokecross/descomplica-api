@@ -22,6 +22,14 @@ class FakeSimulatesRepository implements ISimulatesRepository {
     return simulate;
   }
 
+  public async findByIdWithPayersAndAttendance(
+    id: string,
+  ): Promise<Simulate | undefined> {
+    const simulate = this.simulates.find(item => item.id === id);
+
+    return simulate;
+  }
+
   public async list(): Promise<Simulate[]> {
     return this.simulates;
   }

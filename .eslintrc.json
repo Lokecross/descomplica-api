@@ -31,6 +31,7 @@
       "no-useless-constructor": "off",
       "@typescript-eslint/ban-types": "off",
       "@typescript-eslint/no-explicit-any": "off",
+      "no-restricted-properties": "off",
       "@typescript-eslint/no-unused-vars": ["error", {
         "argsIgnorePattern": "_"
       }],

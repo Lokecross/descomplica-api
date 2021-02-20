@@ -1,7 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
-import ISankhyaProvider from '@shared/container/providers/Sankhya/models/ISankhyaProvider';
 
 import ICustomersRepository from '@modules/customers/repositories/ICustomersRepository';
 import ILotsRepository from '@modules/lots/repositories/ILotsRepository';
@@ -44,9 +43,6 @@ class CreateAttendanceService {
 
     @inject('AuditionsRepository')
     private auditionsRepository: IAuditionsRepository,
-
-    @inject('SankhyaProvider')
-    private sankhyaProvider: ISankhyaProvider,
   ) {}
 
   public async execute({
@@ -69,21 +65,6 @@ class CreateAttendanceService {
 
     if (!broker) {
       throw new AppError('Broker not found', 404);
-    }
-
-    try {
-      await this.sankhyaProvider.createReservation(
-        lot.sankhya_id,
-        broker.sankhya_id,
-        document,
-        name,
-        email,
-        phone,
-        note,
-        gender,
-      );
-    } catch (error) {
-      throw new AppError(error.message);
     }
 
     lot.initials_situation = 'RE';

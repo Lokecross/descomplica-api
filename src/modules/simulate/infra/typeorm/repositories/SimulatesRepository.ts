@@ -25,10 +25,22 @@ class SimulatesRepository implements ISimulatesRepository {
       relations: [
         'attendance',
         'lot',
+        'payers',
+        'comissions',
         'lot.enterprise',
         'attendance.customer',
         'attendance.broker',
       ],
+    });
+
+    return simulate;
+  }
+
+  public async findByIdWithPayersAndAttendance(
+    id: string,
+  ): Promise<Simulate | undefined> {
+    const simulate = await this.ormRepository.findOne(id, {
+      relations: ['payers', 'attendance', 'attendance.customer'],
     });
 
     return simulate;
