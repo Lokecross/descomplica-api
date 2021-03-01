@@ -13,6 +13,10 @@ import Lot from '@modules/lots/infra/typeorm/entities/Lot';
 import Payer from './Payer';
 import Comission from './Comission';
 
+const tuple = <T extends string[]>(...args: T) => args;
+export const statusSimulateOptions = tuple('in_progress', 'sent', 'refused');
+export type StatusSimulateOptions = typeof statusSimulateOptions[number];
+
 @Entity('simulates')
 class Simulate {
   @PrimaryGeneratedColumn('uuid')
@@ -59,6 +63,9 @@ class Simulate {
 
   @Column({ nullable: true })
   contractId: string;
+
+  @Column({ nullable: true })
+  status: 'in_progress' | 'sent' | 'refused';
 
   @OneToMany(() => Payer, payer => payer.simulate)
   payers: Payer[];

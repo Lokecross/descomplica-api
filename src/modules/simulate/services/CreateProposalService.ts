@@ -246,6 +246,10 @@ class CreateProposalService {
       throw new AppError(sendProposal.error);
     }
 
+    simulate.status = 'sent';
+
+    await this.simulatesRepository.save(simulate);
+
     return {
       ok: true,
     };

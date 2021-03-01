@@ -28,7 +28,7 @@ class AttendancesRepository implements IAttendancesRepository {
 
   public async list(): Promise<Attendance[]> {
     const attendances = await this.ormRepository.find({
-      relations: ['customer', 'lot', 'lot.enterprise'],
+      relations: ['customer', 'lot', 'lot.enterprise', 'simulates'],
     });
 
     return attendances;

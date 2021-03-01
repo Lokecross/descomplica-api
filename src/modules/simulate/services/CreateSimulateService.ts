@@ -42,6 +42,7 @@ class CreateSimulateService {
     const simulate = await this.simulatesRepository.create({
       lotId: lot.id,
       attendanceId,
+      status: 'in_progress',
     });
 
     return simulate;
