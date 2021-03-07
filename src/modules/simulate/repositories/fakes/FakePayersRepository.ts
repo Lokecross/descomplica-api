@@ -18,6 +18,10 @@ class FakePayersRepository implements IPayersRepository {
     return this.payers;
   }
 
+  public async delete(payer: Payer): Promise<void> {
+    this.payers = this.payers.filter(item => item.id !== payer.id);
+  }
+
   public async create(data: ICreatePayerDTO): Promise<Payer> {
     const payer = new Payer();
 

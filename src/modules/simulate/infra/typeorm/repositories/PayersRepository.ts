@@ -26,6 +26,10 @@ class PayersRepository implements IPayersRepository {
     return payers;
   }
 
+  public async delete(payer: Payer): Promise<void> {
+    await this.ormRepository.delete({ id: payer.id });
+  }
+
   public async create(data: ICreatePayerDTO): Promise<Payer> {
     const payer = this.ormRepository.create(data);
 

@@ -15,6 +15,7 @@ import UpdatePaymentDataController from '../controllers/UpdatePaymentDataControl
 import ReserveController from '../controllers/ReserveController';
 import PayersController from '../controllers/PayersController';
 import CreateComissionsController from '../controllers/CreateComissionsController';
+import DeleteComissionsController from '../controllers/DeleteComissionsController';
 import CreateProposalController from '../controllers/CreateProposalController';
 import SimulationLotController from '../controllers/SimulationLotController';
 
@@ -31,6 +32,7 @@ const updatePaymentDataController = new UpdatePaymentDataController();
 const reserveController = new ReserveController();
 const payersController = new PayersController();
 const createComissionsController = new CreateComissionsController();
+const deleteComissionsController = new DeleteComissionsController();
 const createProposalController = new CreateProposalController();
 const simulationLotController = new SimulationLotController();
 
@@ -45,6 +47,16 @@ simulateRouter.post(
     },
   }),
   simulatesController.create,
+);
+
+simulateRouter.delete(
+  '/payers/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  payersController.delete,
 );
 
 simulateRouter.post(
@@ -116,6 +128,16 @@ simulateRouter.post(
     },
   }),
   createComissionsController.create,
+);
+
+simulateRouter.delete(
+  '/:id/comissions',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  deleteComissionsController.delete,
 );
 
 simulateRouter.post(

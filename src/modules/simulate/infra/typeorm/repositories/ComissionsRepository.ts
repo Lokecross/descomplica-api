@@ -24,6 +24,10 @@ class ComissionsRepository implements IComissionsRepository {
     return comissions;
   }
 
+  public async delete(comission: Comission): Promise<void> {
+    await this.ormRepository.delete({ id: comission.id });
+  }
+
   public async create(data: ICreateComissionDTO): Promise<Comission> {
     const comission = this.ormRepository.create(data);
 

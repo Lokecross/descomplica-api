@@ -18,6 +18,10 @@ class FakeComissionsRepository implements IComissionsRepository {
     return this.comissions;
   }
 
+  public async delete(comission: Comission): Promise<void> {
+    this.comissions = this.comissions.filter(item => item.id !== comission.id);
+  }
+
   public async create(data: ICreateComissionDTO): Promise<Comission> {
     const comission = new Comission();
 
