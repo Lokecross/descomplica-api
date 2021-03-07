@@ -24,6 +24,12 @@ class FakeLotsRepository implements ILotsRepository {
     return findLot;
   }
 
+  public async findByIdWithRelations(id: string): Promise<Lot | undefined> {
+    const findLot = this.lots.find(lot => lot.id === id);
+
+    return findLot;
+  }
+
   public async findBySankhyaId(sankhya_id: string): Promise<Lot | undefined> {
     const findLot = this.lots.find(lot => lot.sankhya_id === sankhya_id);
 

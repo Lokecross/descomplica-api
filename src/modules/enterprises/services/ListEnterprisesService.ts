@@ -1,5 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
+import { classToClass } from 'class-transformer';
+
 import Enterprise from '../infra/typeorm/entities/Enterprise';
 
 import IEnterprisesRepository from '../repositories/IEnterprisesRepository';
@@ -14,7 +16,7 @@ class ListEnterprisesService {
   public async execute(): Promise<Enterprise[]> {
     const enterprises = await this.enterprisesRepository.list();
 
-    return enterprises;
+    return classToClass(enterprises);
   }
 }
 

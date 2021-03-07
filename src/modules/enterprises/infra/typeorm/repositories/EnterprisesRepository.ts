@@ -49,7 +49,7 @@ class EnterprisesRepository implements IEnterprisesRepository {
 
   public async list(): Promise<Enterprise[]> {
     const enterprises = await this.ormRepository.find({
-      relations: ['users'],
+      relations: ['users', 'lots'],
     });
 
     return enterprises;

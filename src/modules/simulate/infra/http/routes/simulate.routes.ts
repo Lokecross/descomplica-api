@@ -16,6 +16,7 @@ import ReserveController from '../controllers/ReserveController';
 import PayersController from '../controllers/PayersController';
 import CreateComissionsController from '../controllers/CreateComissionsController';
 import CreateProposalController from '../controllers/CreateProposalController';
+import SimulationLotController from '../controllers/SimulationLotController';
 
 const simulateRouter = Router();
 const simulationController = new SimulationController();
@@ -31,6 +32,7 @@ const reserveController = new ReserveController();
 const payersController = new PayersController();
 const createComissionsController = new CreateComissionsController();
 const createProposalController = new CreateProposalController();
+const simulationLotController = new SimulationLotController();
 
 simulateRouter.use(ensureAuthenticated);
 
@@ -43,6 +45,16 @@ simulateRouter.post(
     },
   }),
   simulatesController.create,
+);
+
+simulateRouter.post(
+  '/simulation/lot',
+  celebrate({
+    [Segments.BODY]: {
+      lotId: Joi.string().uuid().required(),
+    },
+  }),
+  simulationLotController.create,
 );
 
 simulateRouter.post(

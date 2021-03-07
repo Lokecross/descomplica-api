@@ -26,6 +26,17 @@ class LotsRepository implements ILotsRepository {
     return broker;
   }
 
+  public async findByIdWithRelations(id: string): Promise<Lot | undefined> {
+    const broker = this.ormRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['enterprise'],
+    });
+
+    return broker;
+  }
+
   public async findBySankhyaId(sankhya_id: string): Promise<Lot | undefined> {
     const lot = this.ormRepository.findOne({
       where: {

@@ -3,12 +3,11 @@ import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 
 import ISankhyaProvider from '@shared/container/providers/Sankhya/models/ISankhyaProvider';
+
 import ILotsRepository from '@modules/lots/repositories/ILotsRepository';
 
-import ISimulatesRepository from '../repositories/ISimulatesRepository';
-
 interface IRequest {
-  simulateId: string;
+  lotId: string;
 }
 
 interface IResponse {
@@ -29,11 +28,8 @@ interface IResponse {
 }
 
 @injectable()
-class SimulationService {
+class SimulationLotService {
   constructor(
-    @inject('SimulatesRepository')
-    private simulatesRepository: ISimulatesRepository,
-
     @inject('LotsRepository')
     private lotsRepository: ILotsRepository,
 
@@ -41,20 +37,14 @@ class SimulationService {
     private sankhyaProvider: ISankhyaProvider,
   ) {}
 
-  public async execute({ simulateId }: IRequest): Promise<IResponse> {
-    const simulate = await this.simulatesRepository.findByIdWithRelations(
-      simulateId,
-    );
+  public async execute({ lotId }: IRequest): Promise<IResponse> {
+    const lot = await this.lotsRepository.findByIdWithRelations(lotId);
 
-    if (!simulate) {
-      throw new AppError('Simulate not found', 404);
+    if (!lot) {
+      throw new AppError('Lot not found', 404);
     }
 
-    const lot = await this.lotsRepository.findByIdWithRelations(simulate.lotId);
-
-    const { data, error } = await this.sankhyaProvider.simulate(
-      simulate.lot.sankhya_id,
-    );
+    const { data, error } = await this.sankhyaProvider.simulate(lot.sankhya_id);
 
     if (error) {
       throw new AppError(error);
@@ -69,4 +59,4 @@ class SimulationService {
   }
 }
 
-export default SimulationService;
+export default SimulationLotService;

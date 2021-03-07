@@ -9,6 +9,8 @@ import {
   JoinTable,
 } from 'typeorm';
 
+import { Exclude, Expose } from 'class-transformer';
+
 import Lot from '@modules/lots/infra/typeorm/entities/Lot';
 import User from '@modules/users/infra/typeorm/entities/User';
 
@@ -42,11 +44,33 @@ class Enterprise {
   reservation_timer: string;
 
   @OneToMany(() => Lot, lot => lot.enterprise)
+  @Exclude()
   lots: Lot[];
 
   @ManyToMany(() => User, user => user.enterprises)
   @JoinTable()
   users: User[];
+
+  @Expose({ name: 'hasAvaiableLot' })
+  getAvaiableLot(): boolean {
+    if (this.lots) {
+      if (this.lots.length === 0) {
+        return false;
+      }
+
+      const indexLotAvaiable = this.lots.findIndex(
+        item => item.initials_situation === 'DI',
+      );
+
+      if (indexLotAvaiable === -1) {
+        return false;
+      }
+
+      return true;
+    }
+
+    return false;
+  }
 
   @CreateDateColumn()
   created_at: Date;
