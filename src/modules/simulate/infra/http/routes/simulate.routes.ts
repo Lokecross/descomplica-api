@@ -49,6 +49,16 @@ simulateRouter.post(
   simulatesController.create,
 );
 
+simulateRouter.get(
+  '/payers/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  payersController.show,
+);
+
 simulateRouter.delete(
   '/payers/:id',
   celebrate({
@@ -57,6 +67,50 @@ simulateRouter.delete(
     },
   }),
   payersController.delete,
+);
+
+simulateRouter.patch(
+  '/payers/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+    [Segments.BODY]: {
+      responsible: Joi.boolean().required().allow(null, ''),
+      document: Joi.string().required().allow(null, ''),
+      name: Joi.string().required().allow(null, ''),
+      village: Joi.string().required().allow(null, ''),
+      address: Joi.string().required().allow(null, ''),
+      number: Joi.string().required().allow(null, ''),
+      complement: Joi.string().required().allow(null, ''),
+      city: Joi.string().required().allow(null, ''),
+      state: Joi.string().required().allow(null, ''),
+      cep: Joi.string().required().allow(null, ''),
+      email: Joi.string().required().allow(null, ''),
+      sex: Joi.string().required().allow(null, ''),
+      rg: Joi.string().required().allow(null, ''),
+      rg_emission: Joi.string().required().allow(null, ''),
+      rg_agency: Joi.string().required().allow(null, ''),
+      birth: Joi.string().required().allow(null, ''),
+      phone: Joi.string().required().allow(null, ''),
+      father: Joi.string().required().allow(null, ''),
+      mother: Joi.string().required().allow(null, ''),
+      profession: Joi.string().required().allow(null, ''),
+      marital_status: Joi.string().required().allow(null, ''),
+      spouse_name: Joi.string().required().allow(null, ''),
+      spouse_rg: Joi.string().required().allow(null, ''),
+      spouse_cpf: Joi.string().required().allow(null, ''),
+      spouse_birth: Joi.string().required().allow(null, ''),
+      spouse_email: Joi.string().required().allow(null, ''),
+      rg_b64: Joi.string().required().allow(null, ''),
+      cpf_b64: Joi.string().required().allow(null, ''),
+      address_b64: Joi.string().required().allow(null, ''),
+      marriage_b64: Joi.string().required().allow(null, ''),
+      spouse_rg_b64: Joi.string().required().allow(null, ''),
+      spouse_cpf_b64: Joi.string().required().allow(null, ''),
+    },
+  }),
+  payersController.update,
 );
 
 simulateRouter.post(
