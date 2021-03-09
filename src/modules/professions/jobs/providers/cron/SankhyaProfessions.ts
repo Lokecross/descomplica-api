@@ -9,7 +9,7 @@ import FindProfessionSankhyaIdService from '@modules/professions/services/FindPr
 import UpdateProfessionService from '@modules/professions/services/UpdateProfessionService';
 
 const job = new CronJob(
-  '0,15,30,45 * * * * *',
+  '0 0 * * * *',
   async () => {
     try {
       const createProfessionService = container.resolve(
@@ -52,8 +52,8 @@ const job = new CronJob(
         }),
       );
 
-      professions.forEach(item => {
-        const doEach = async () => {
+      await Promise.all(
+        professions.map(async item => {
           try {
             const brokerExists = await findProfessionSankhyaIdService.execute({
               sankhya_id: item.sankhya_id,
@@ -66,10 +66,8 @@ const job = new CronJob(
           } catch (error) {
             await createProfessionService.execute(item);
           }
-        };
-
-        doEach();
-      });
+        }),
+      );
     } catch (err) {
       // console.log(err);
     }

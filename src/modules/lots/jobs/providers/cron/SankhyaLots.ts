@@ -10,7 +10,7 @@ import UpdateLotService from '@modules/lots/services/UpdateLotService';
 import ListEnterprisesService from '@modules/enterprises/services/ListEnterprisesService';
 
 const job = new CronJob(
-  '0 * * * * *',
+  '0 15 * * * *',
   async () => {
     try {
       const createLotService = container.resolve(CreateLotService);
@@ -130,8 +130,8 @@ const job = new CronJob(
               }),
             );
 
-            lots.forEach(itemLot => {
-              const doEach2 = async () => {
+            await Promise.all(
+              lots.map(async itemLot => {
                 try {
                   const brokerExists = await findLotSankhyaIdService.execute({
                     sankhya_id: itemLot.sankhya_id,
@@ -148,10 +148,8 @@ const job = new CronJob(
                     // console.log(err);
                   }
                 }
-              };
-
-              doEach2();
-            });
+              }),
+            );
           } catch (error) {
             //
           }

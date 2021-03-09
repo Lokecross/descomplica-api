@@ -9,7 +9,7 @@ import FindBrokerCpfService from '@modules/brokers/services/FindBrokerCpfService
 import UpdateBrokerService from '@modules/brokers/services/UpdateBrokerService';
 
 const job = new CronJob(
-  '0 * * * * *',
+  '0 45 * * * *',
   async () => {
     try {
       const createBrokerService = container.resolve(CreateBrokerService);
@@ -66,8 +66,8 @@ const job = new CronJob(
         }),
       );
 
-      brokers.forEach(item => {
-        const doEach = async () => {
+      await Promise.all(
+        brokers.map(async item => {
           try {
             const brokerExists = await findBrokerCpfService.execute({
               cpf: item.cpf,
@@ -80,10 +80,8 @@ const job = new CronJob(
           } catch (error) {
             await createBrokerService.execute(item);
           }
-        };
-
-        doEach();
-      });
+        }),
+      );
     } catch (err) {
       // console.log(err);
     }

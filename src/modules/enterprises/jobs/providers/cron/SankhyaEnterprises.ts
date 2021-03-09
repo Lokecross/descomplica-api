@@ -9,7 +9,7 @@ import FindEnterpriseSankhyaIdService from '@modules/enterprises/services/FindEn
 import UpdateEnterpriseService from '@modules/enterprises/services/UpdateEnterpriseService';
 
 const job = new CronJob(
-  '0 * * * * *',
+  '0 30 * * * *',
   async () => {
     try {
       const createEnterpriseService = container.resolve(
@@ -70,8 +70,8 @@ const job = new CronJob(
         }),
       );
 
-      enterprises.forEach(item => {
-        const doEach = async () => {
+      await Promise.all(
+        enterprises.map(async item => {
           try {
             const brokerExists = await findEnterpriseSankhyaIdService.execute({
               sankhya_id: item.sankhya_id,
@@ -84,10 +84,8 @@ const job = new CronJob(
           } catch (error) {
             await createEnterpriseService.execute(item);
           }
-        };
-
-        doEach();
-      });
+        }),
+      );
     } catch (err) {
       // console.log(err);
     }
