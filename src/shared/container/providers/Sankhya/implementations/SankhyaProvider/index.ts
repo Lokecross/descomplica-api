@@ -415,6 +415,31 @@ class SankhyaProvider implements ISankhyaProvider {
     data: {
       payer_id: string;
       partner_id: string;
+      rg: string;
+      phone: string;
+      marital_status: string;
+      name: string;
+      sex: string;
+      birth: string;
+      email: string;
+      profession: string;
+      document: string;
+      rg_emission: string;
+      rg_agency: string;
+      mother: string;
+      father: string;
+      cep: string;
+      state: string;
+      number: string;
+      complement: string;
+      city: string;
+      address: string;
+      village: string;
+      spouse_rg: string;
+      spouse_birth: string;
+      spouse_email: string;
+      spouse_cpf: string;
+      spouse_name: string;
     };
     error: string | null;
   }> {
@@ -443,13 +468,36 @@ class SankhyaProvider implements ISankhyaProvider {
 
       const recordPayerCreate =
         payerCreate?.serviceResponse?.responseBody[0]?.entities[0]?.entity[0];
-      const payer_id = recordPayerCreate?.CODCADPAR[0];
-      const partner_id = recordPayerCreate?.COD_PARC[0];
 
       return {
         data: {
-          payer_id,
-          partner_id,
+          payer_id: recordPayerCreate?.CODCADPAR[0],
+          partner_id: recordPayerCreate?.COD_PARC[0],
+          rg: recordPayerCreate?.RG[0],
+          phone: recordPayerCreate?.TELEFONE1[0],
+          marital_status: recordPayerCreate?.ESTADOCIVIL[0],
+          name: recordPayerCreate?.NOMEPARC[0],
+          sex: recordPayerCreate?.SEXO[0],
+          birth: recordPayerCreate?.DTNASCIMENTO[0],
+          email: recordPayerCreate?.EMAIL[0],
+          profession: recordPayerCreate?.PROFISSAO[0],
+          document: recordPayerCreate?.CPF_CNPJ[0],
+          rg_emission: recordPayerCreate?.RGDTEMISSAO[0],
+          rg_agency: recordPayerCreate?.RGORGEXP[0],
+          mother: recordPayerCreate?.NOMEMAE[0],
+          father: recordPayerCreate?.NOMEPAI[0],
+          cep: recordPayerCreate?.CEP[0],
+          state: recordPayerCreate?.SIGLAUF[0],
+          number: recordPayerCreate?.NUMEND[0],
+          complement: recordPayerCreate?.COMPLEMENTO[0],
+          city: recordPayerCreate?.NOMECIDADE[0],
+          address: recordPayerCreate?.LOGRADOURO[0],
+          village: recordPayerCreate?.NOME_BAIRRO[0],
+          spouse_rg: recordPayerCreate?.RG_CONJ[0],
+          spouse_birth: recordPayerCreate?.DTNASCIMENTO_CONJ[0],
+          spouse_email: recordPayerCreate?.EMAIL_CONJ[0],
+          spouse_cpf: recordPayerCreate?.CPF_CONJ[0],
+          spouse_name: recordPayerCreate?.NOME_CONJ[0],
         },
         error: null,
       };

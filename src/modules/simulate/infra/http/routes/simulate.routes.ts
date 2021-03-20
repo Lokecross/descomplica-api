@@ -18,6 +18,7 @@ import CreateComissionsController from '../controllers/CreateComissionsControlle
 import DeleteComissionsController from '../controllers/DeleteComissionsController';
 import CreateProposalController from '../controllers/CreateProposalController';
 import SimulationLotController from '../controllers/SimulationLotController';
+import ShowPartnerByCpfController from '../controllers/ShowPartnerByCpfController';
 
 const simulateRouter = Router();
 const simulationController = new SimulationController();
@@ -35,6 +36,7 @@ const createComissionsController = new CreateComissionsController();
 const deleteComissionsController = new DeleteComissionsController();
 const createProposalController = new CreateProposalController();
 const simulationLotController = new SimulationLotController();
+const showPartnerByCpfController = new ShowPartnerByCpfController();
 
 simulateRouter.use(ensureAuthenticated);
 
@@ -47,6 +49,16 @@ simulateRouter.post(
     },
   }),
   simulatesController.create,
+);
+
+simulateRouter.post(
+  '/partner',
+  celebrate({
+    [Segments.BODY]: {
+      document: Joi.string().required(),
+    },
+  }),
+  showPartnerByCpfController.create,
 );
 
 simulateRouter.get(

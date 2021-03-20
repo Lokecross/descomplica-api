@@ -93,6 +93,31 @@ class FakeSankhyaProvider implements ISankhyaProvider {
     data: {
       payer_id: string;
       partner_id: string;
+      rg: string;
+      phone: string;
+      marital_status: string;
+      name: string;
+      sex: string;
+      birth: string;
+      email: string;
+      profession: string;
+      document: string;
+      rg_emission: string;
+      rg_agency: string;
+      mother: string;
+      father: string;
+      cep: string;
+      state: string;
+      number: string;
+      complement: string;
+      city: string;
+      address: string;
+      village: string;
+      spouse_rg: string;
+      spouse_birth: string;
+      spouse_email: string;
+      spouse_cpf: string;
+      spouse_name: string;
     };
     error: string | null;
   }> {
@@ -100,6 +125,31 @@ class FakeSankhyaProvider implements ISankhyaProvider {
       data: {
         payer_id: '',
         partner_id: '',
+        rg: '',
+        phone: '',
+        marital_status: '',
+        name: '',
+        sex: '',
+        birth: '',
+        email: '',
+        profession: '',
+        document: '',
+        rg_emission: '',
+        rg_agency: '',
+        mother: '',
+        father: '',
+        cep: '',
+        state: '',
+        number: '',
+        complement: '',
+        city: '',
+        address: '',
+        village: '',
+        spouse_rg: '',
+        spouse_birth: '',
+        spouse_email: '',
+        spouse_cpf: '',
+        spouse_name: '',
       },
       error: null,
     };
