@@ -24,6 +24,9 @@ class Payer {
   responsible: boolean;
 
   @Column({ nullable: true })
+  sankhyaPartnerId: string;
+
+  @Column({ nullable: true })
   document: string;
 
   @Column({ nullable: true })

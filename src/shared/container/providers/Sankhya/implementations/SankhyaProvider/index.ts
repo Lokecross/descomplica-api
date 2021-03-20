@@ -414,6 +414,7 @@ class SankhyaProvider implements ISankhyaProvider {
   }): Promise<{
     data: {
       payer_id: string;
+      partner_id: string;
     };
     error: string | null;
   }> {
@@ -426,7 +427,7 @@ class SankhyaProvider implements ISankhyaProvider {
             </entity>
             <dataRow>
               <localFields>
-                <CPF_CNPJ>${document}</CPF_CNPJ>
+                <CPF_CNPJ>${document.replace(/[^0-9]/g, '')}</CPF_CNPJ>
               </localFields>
             </dataRow>
           </dataSet>
@@ -443,10 +444,12 @@ class SankhyaProvider implements ISankhyaProvider {
       const recordPayerCreate =
         payerCreate?.serviceResponse?.responseBody[0]?.entities[0]?.entity[0];
       const payer_id = recordPayerCreate?.CODCADPAR[0];
+      const partner_id = recordPayerCreate?.COD_PARC[0];
 
       return {
         data: {
           payer_id,
+          partner_id,
         },
         error: null,
       };

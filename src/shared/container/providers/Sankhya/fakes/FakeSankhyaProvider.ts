@@ -92,12 +92,14 @@ class FakeSankhyaProvider implements ISankhyaProvider {
   public async createPayer(): Promise<{
     data: {
       payer_id: string;
+      partner_id: string;
     };
     error: string | null;
   }> {
     return {
       data: {
         payer_id: '',
+        partner_id: '',
       },
       error: null,
     };

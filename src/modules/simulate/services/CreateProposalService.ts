@@ -212,7 +212,7 @@ class CreateProposalService {
         }
 
         const addPayer = await this.sankhyaProvider.addPayer({
-          payer_id: payer.data.payer_id,
+          payer_id: payer.data.partner_id,
           proposal_id: contract.data.contract_id,
           responsible: item.responsible,
         });

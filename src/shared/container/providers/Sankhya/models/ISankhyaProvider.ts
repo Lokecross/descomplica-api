@@ -91,6 +91,7 @@ export default interface ISankhyaProvider {
   }): Promise<{
     data: {
       payer_id: string;
+      partner_id: string;
     };
     error: string | null;
   }>;
