@@ -7,6 +7,7 @@ import AppError from '@shared/errors/AppError';
 import ISankhyaProvider from '@shared/container/providers/Sankhya/models/ISankhyaProvider';
 import IBrokersRepository from '@modules/brokers/repositories/IBrokersRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IAttendancesRepository from '@modules/attendances/repositories/IAttendancesRepository';
 import ISimulatesRepository from '../repositories/ISimulatesRepository';
 
 interface IRequest {
@@ -26,6 +27,9 @@ class CreateProposalService {
     @inject('BrokersRepository')
     private brokersRepository: IBrokersRepository,
 
+    @inject('AttendancesRepository')
+    private attendancesRepository: IAttendancesRepository,
+
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
   ) {}
@@ -37,6 +41,14 @@ class CreateProposalService {
     const simulateWithRelations = await this.simulatesRepository.findByIdWithRelations(
       simulateId,
     );
+
+    const attendance = await this.attendancesRepository.findById(
+      simulate.attendanceId,
+    );
+
+    if (!attendance) {
+      throw new AppError('Attendance not found', 404);
+    }
 
     if (!simulate) {
       throw new AppError('Simulate not found', 404);
@@ -72,22 +84,25 @@ class CreateProposalService {
           ? `${
               parseFloat(
                 `${simulate.price}`.replace(/[^0-9,]/g, '').replace(',', '.'),
-              ) / Number(simulate.deadline)
+              ) /
+              Number(simulate.deadline) /
+              100
             }`
           : `${
-              parseFloat(
+              (parseFloat(
                 `${simulate.price}`.replace(/[^0-9,]/g, '').replace(',', '.'),
               ) *
-              ((Math.pow(
-                simulation.data.tax / 100 + 1,
-                Number(simulate.deadline),
-              ) *
-                (simulation.data.tax / 100)) /
-                (Math.pow(
+                ((Math.pow(
                   simulation.data.tax / 100 + 1,
                   Number(simulate.deadline),
-                ) -
-                  1))
+                ) *
+                  (simulation.data.tax / 100)) /
+                  (Math.pow(
+                    simulation.data.tax / 100 + 1,
+                    Number(simulate.deadline),
+                  ) -
+                    1))) /
+              100
             }`,
       installments: simulate.deadline,
       is_financed: simulate.input !== '',
@@ -122,8 +137,13 @@ class CreateProposalService {
 
     await this.simulatesRepository.save(simulate);
 
+    const responsibleIndex = simulateWithRelations.payers.findIndex(
+      item => item.responsible,
+    );
+    const hasResponsible = responsibleIndex !== -1;
+
     await Promise.all(
-      simulateWithRelations.payers.map(async item => {
+      simulateWithRelations.payers.map(async (item, index) => {
         const payer = await this.sankhyaProvider.createPayer({
           document: item.document,
         });
@@ -214,7 +234,8 @@ class CreateProposalService {
         const addPayer = await this.sankhyaProvider.addPayer({
           payer_id: payer.data.partner_id,
           proposal_id: contract.data.contract_id,
-          responsible: item.responsible,
+          responsible:
+            index === responsibleIndex || (index === 0 && !hasResponsible),
         });
 
         if (addPayer.error) {
@@ -249,6 +270,10 @@ class CreateProposalService {
     simulate.status = 'sent';
 
     await this.simulatesRepository.save(simulate);
+
+    attendance.status = 'proposal';
+
+    await this.attendancesRepository.save(attendance);
 
     return {
       ok: true,
