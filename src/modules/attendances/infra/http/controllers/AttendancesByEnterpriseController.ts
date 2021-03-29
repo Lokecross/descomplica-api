@@ -14,6 +14,7 @@ export default class AttendancesByEnterpriseController {
 
     const attendances = await listAttendances.execute({
       enterpriseId: enterprise_id,
+      userId: req.user.id,
     });
 
     return res.json(attendances);

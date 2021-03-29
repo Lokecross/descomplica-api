@@ -1,5 +1,6 @@
 import { uuid } from 'uuidv4';
 
+import IListByUserAndEnterprise from '@modules/attendances/dtos/IListByUserAndEnterprise';
 import IAttendancesRepository from '../IAttendancesRepository';
 import ICreateAttendanceDTO from '../../dtos/ICreateAttendanceDTO';
 
@@ -33,6 +34,20 @@ class FakeAttendancesRepository implements IAttendancesRepository {
   public async listByEnterprise(enterpriseId: string): Promise<Attendance[]> {
     return this.attendances.filter(
       item => item.lot.enterpriseId === enterpriseId,
+    );
+  }
+
+  public async listByBroker(brokerId: string): Promise<Attendance[]> {
+    return this.attendances.filter(item => item.brokerId === brokerId);
+  }
+
+  public async listByBrokerAndEnterprise({
+    brokerId,
+    enterpriseId,
+  }: IListByUserAndEnterprise): Promise<Attendance[]> {
+    return this.attendances.filter(
+      item =>
+        item.brokerId === brokerId && item.lot.enterpriseId === enterpriseId,
     );
   }
 

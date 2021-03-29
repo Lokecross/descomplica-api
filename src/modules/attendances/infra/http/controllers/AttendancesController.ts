@@ -11,7 +11,9 @@ export default class AttendancesController {
   public async index(req: Request, res: Response): Promise<Response> {
     const listAttendances = container.resolve(ListAttendancesService);
 
-    const attendances = await listAttendances.execute();
+    const attendances = await listAttendances.execute({
+      userId: req.user.id,
+    });
 
     return res.json(attendances);
   }

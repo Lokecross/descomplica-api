@@ -3,6 +3,7 @@ import { getRepository, Repository } from 'typeorm';
 import IAttendancesRepository from '@modules/attendances/repositories/IAttendancesRepository';
 import ICreateAttendanceDTO from '@modules/attendances/dtos/ICreateAttendanceDTO';
 
+import IListByUserAndEnterprise from '@modules/attendances/dtos/IListByUserAndEnterprise';
 import Attendance from '../entities/Attendance';
 
 class AttendancesRepository implements IAttendancesRepository {
@@ -28,7 +29,7 @@ class AttendancesRepository implements IAttendancesRepository {
 
   public async list(): Promise<Attendance[]> {
     const attendances = await this.ormRepository.find({
-      relations: ['customer', 'lot', 'lot.enterprise', 'simulates'],
+      relations: ['customer', 'lot', 'lot.enterprise', 'simulates', 'broker'],
     });
 
     return attendances;
@@ -41,6 +42,32 @@ class AttendancesRepository implements IAttendancesRepository {
       .innerJoinAndSelect('attendances.customer', 'customers')
       .innerJoinAndSelect('lots.enterprise', 'enterprises')
       .where('lots.enterpriseId = :enterpriseId', { enterpriseId })
+      .getMany();
+
+    return attendances;
+  }
+
+  public async listByBroker(brokerId: string): Promise<Attendance[]> {
+    const attendances = await this.ormRepository.find({
+      where: {
+        brokerId,
+      },
+    });
+
+    return attendances;
+  }
+
+  public async listByBrokerAndEnterprise({
+    brokerId,
+    enterpriseId,
+  }: IListByUserAndEnterprise): Promise<Attendance[]> {
+    const attendances = await this.ormRepository
+      .createQueryBuilder('attendances')
+      .innerJoinAndSelect('attendances.lot', 'lots')
+      .innerJoinAndSelect('attendances.customer', 'customers')
+      .innerJoinAndSelect('lots.enterprise', 'enterprises')
+      .where('attendances.brokerId = :brokerId', { brokerId })
+      .andWhere('lots.enterpriseId = :enterpriseId', { enterpriseId })
       .getMany();
 
     return attendances;
