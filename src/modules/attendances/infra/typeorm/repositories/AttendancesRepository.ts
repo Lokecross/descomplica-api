@@ -52,6 +52,7 @@ class AttendancesRepository implements IAttendancesRepository {
       where: {
         brokerId,
       },
+      relations: ['customer', 'lot', 'lot.enterprise', 'simulates', 'broker'],
     });
 
     return attendances;
