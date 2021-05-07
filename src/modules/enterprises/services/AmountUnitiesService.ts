@@ -26,7 +26,25 @@ class AmountUnitiesService {
     const lots = await this.lotsRepository.list();
 
     return {
-      enterprises: enterprises.length,
+      enterprises: enterprises.filter(item => {
+        if (item.lots) {
+          if (item.lots.length === 0) {
+            return false;
+          }
+
+          const indexLotAvaiable = item.lots.findIndex(
+            itemLot => itemLot.initials_situation === 'DI',
+          );
+
+          if (indexLotAvaiable === -1) {
+            return false;
+          }
+
+          return true;
+        }
+
+        return false;
+      }).length,
       lots_avaiable: lots.filter(itemLot => itemLot.initials_situation === 'DI')
         .length,
       lots_sold: lots.filter(itemLot => itemLot.initials_situation === 'VE')
