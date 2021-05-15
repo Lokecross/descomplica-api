@@ -30,6 +30,10 @@ class UsersRepository implements IUsersRepository {
     return this.users;
   }
 
+  public async listByTeam(teamId: string): Promise<User[]> {
+    return this.users.filter(item => item.teamId === teamId);
+  }
+
   public async create(userData: ICreateUserDTO): Promise<User> {
     const user = new User();
 

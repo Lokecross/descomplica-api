@@ -52,6 +52,20 @@ class CustomersRepository implements ICustomersRepository {
     });
   }
 
+  public async listByBroker(brokerId: string): Promise<Customer[]> {
+    return this.customers.filter(itemCustomer => {
+      return (
+        itemCustomer.attendances.findIndex(
+          itemAttendance => itemAttendance.brokerId === brokerId,
+        ) !== -1
+      );
+    });
+  }
+
+  public async listBySupervisor(): Promise<Customer[]> {
+    return this.customers;
+  }
+
   public async save(customer: Customer): Promise<Customer> {
     const findIndex = this.customers.findIndex(
       findCustomer => findCustomer.id === customer.id,

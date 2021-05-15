@@ -67,11 +67,6 @@ class CreateAttendanceService {
       throw new AppError('Broker not found', 404);
     }
 
-    lot.initials_situation = 'RE';
-    lot.situation = 'Reservado';
-
-    await this.lotsRepository.save(lot);
-
     const customerExists = await this.customersRepository.findByDocument(
       document,
     );

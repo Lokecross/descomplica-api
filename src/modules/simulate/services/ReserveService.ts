@@ -1,7 +1,10 @@
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
+
 import ISankhyaProvider from '@shared/container/providers/Sankhya/models/ISankhyaProvider';
+import ILotsRepository from '@modules/lots/repositories/ILotsRepository';
+
 import ISimulatesRepository from '../repositories/ISimulatesRepository';
 
 interface IRequest {
@@ -11,11 +14,14 @@ interface IRequest {
 @injectable()
 class CreateReservetionService {
   constructor(
+    @inject('SimulatesRepository')
+    private simulatesRepository: ISimulatesRepository,
+
     @inject('SankhyaProvider')
     private sankhyaProvider: ISankhyaProvider,
 
-    @inject('SimulatesRepository')
-    private simulatesRepository: ISimulatesRepository,
+    @inject('LotsRepository')
+    private lotsRepository: ILotsRepository,
   ) {}
 
   public async execute({ simulateId }: IRequest): Promise<any> {
@@ -45,6 +51,17 @@ class CreateReservetionService {
     simulate.reservationId = data.reservation_id;
 
     await this.simulatesRepository.save(simulate);
+
+    const lot = await this.lotsRepository.findById(simulate.lotId);
+
+    if (!lot) {
+      throw new AppError('Lot not found', 404);
+    }
+
+    lot.initials_situation = 'RE';
+    lot.situation = 'Reservado';
+
+    await this.lotsRepository.save(lot);
 
     return simulate;
   }

@@ -48,6 +48,17 @@ class UsersRepository implements IUsersRepository {
     return users;
   }
 
+  public async listByTeam(teamId: string): Promise<User[]> {
+    const users = await this.ormRepository.find({
+      where: {
+        teamId,
+      },
+      relations: ['broker', 'team', 'enterprises', 'team.supervisor'],
+    });
+
+    return users;
+  }
+
   public async create(userData: ICreateUserDTO): Promise<User> {
     const user = this.ormRepository.create(userData);
 

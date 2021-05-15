@@ -14,6 +14,14 @@ class FakeTeamsRepository implements ITeamsRepository {
     return team;
   }
 
+  public async findBySupervisor(
+    supervisorId: string,
+  ): Promise<Team | undefined> {
+    const team = this.teams.find(item => item.supervisorId === supervisorId);
+
+    return team;
+  }
+
   public async list(): Promise<Team[]> {
     return this.teams;
   }

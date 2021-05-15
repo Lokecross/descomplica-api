@@ -8,5 +8,7 @@ export default interface ICustomersRepository {
   delete(customer: Customer): Promise<void>;
   list(): Promise<Customer[]>;
   listByEnterprise(enterpriseId: string): Promise<Customer[]>;
+  listByBroker(brokerId: string): Promise<Customer[]>;
+  listBySupervisor(supervisorId: string): Promise<Customer[]>;
   save(customer: Customer): Promise<Customer>;
 }

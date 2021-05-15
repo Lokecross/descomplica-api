@@ -20,6 +20,19 @@ class TeamsRepository implements ITeamsRepository {
     return team;
   }
 
+  public async findBySupervisor(
+    supervisorId: string,
+  ): Promise<Team | undefined> {
+    const team = await this.ormRepository.findOne({
+      where: {
+        supervisorId,
+      },
+      relations: ['supervisor'],
+    });
+
+    return team;
+  }
+
   public async list(): Promise<Team[]> {
     const teams = await this.ormRepository.find({
       relations: ['supervisor', 'users'],

@@ -6,6 +6,7 @@ export default interface IUsersRepository {
   findByEmail(email: string): Promise<User | undefined>;
   findByBroker(id: string): Promise<User | undefined>;
   list(): Promise<User[]>;
+  listByTeam(teamId: string): Promise<User[]>;
   create(data: ICreateUserDTO): Promise<User>;
   save(user: User): Promise<User>;
 }

@@ -61,6 +61,34 @@ class CustomersRepository implements ICustomersRepository {
     return customers;
   }
 
+  public async listByBroker(brokerId: string): Promise<Customer[]> {
+    const customers = await this.ormRepository
+      .createQueryBuilder('customers')
+      .innerJoinAndSelect('customers.attendances', 'attendances')
+      .innerJoinAndSelect('attendances.lot', 'lots')
+      .innerJoinAndSelect('lots.enterprise', 'enterprises')
+      .where('attendances.brokerId = :brokerId', {
+        brokerId,
+      })
+      .getMany();
+
+    return customers;
+  }
+
+  public async listBySupervisor(supervisorId: string): Promise<Customer[]> {
+    const customers = await this.ormRepository
+      .createQueryBuilder('customers')
+      .innerJoinAndSelect('customers.attendances', 'attendances')
+      .innerJoinAndSelect('attendances.lot', 'lots')
+      .innerJoinAndSelect('lots.enterprise', 'enterprises')
+      .where('attendances.brokerId = :brokerId', {
+        supervisorId,
+      })
+      .getMany();
+
+    return customers;
+  }
+
   public async delete(customer: Customer): Promise<void> {
     await this.ormRepository.delete({ id: customer.id });
   }
