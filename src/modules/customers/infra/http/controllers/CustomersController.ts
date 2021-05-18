@@ -12,7 +12,9 @@ export default class CustomersController {
   public async index(req: Request, res: Response): Promise<Response> {
     const listCustomer = container.resolve(ListCustomerService);
 
-    const customers = await listCustomer.execute();
+    const customers = await listCustomer.execute({
+      userId: req.user.id,
+    });
 
     return res.json(customers);
   }
