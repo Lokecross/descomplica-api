@@ -45,8 +45,10 @@ class ListCustomerService {
 
         const customersSupervisor = customers.filter(item => {
           const attendances = item.attendances.filter(attendance => {
-            return usersIdByTeam.some(
-              brokerId => brokerId === attendance.brokerId,
+            return (
+              usersIdByTeam.some(
+                brokerId => brokerId === attendance.brokerId,
+              ) || attendance.brokerId === user.brokerId
             );
           });
 
