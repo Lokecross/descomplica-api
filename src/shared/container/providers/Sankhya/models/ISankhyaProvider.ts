@@ -25,6 +25,8 @@ export default interface ISankhyaProvider {
       broker_tax: number;
       franchisee_price: number;
       franchisee_tax: number;
+      tabela: string;
+      periodicidade: string;
     };
     error: string | null;
   }>;

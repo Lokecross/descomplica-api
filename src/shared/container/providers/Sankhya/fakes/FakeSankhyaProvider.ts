@@ -18,6 +18,8 @@ class FakeSankhyaProvider implements ISankhyaProvider {
       broker_tax: number;
       franchisee_price: number;
       franchisee_tax: number;
+      tabela: string;
+      periodicidade: string;
     };
     error: string | null;
   }> {
@@ -34,6 +36,8 @@ class FakeSankhyaProvider implements ISankhyaProvider {
         broker_tax: 1,
         franchisee_price: 1,
         franchisee_tax: 1,
+        tabela: '',
+        periodicidade: '',
       },
       error: null,
     };

@@ -72,6 +72,8 @@ class SankhyaProvider implements ISankhyaProvider {
       broker_tax: number;
       franchisee_price: number;
       franchisee_tax: number;
+      tabela: string;
+      periodicidade: string;
     };
     error: string | null;
   }> {
@@ -95,6 +97,7 @@ class SankhyaProvider implements ISankhyaProvider {
               <field>QTDMINPARC</field>
               <field>QTDMAXPARC</field>
               <field>PERIODICIDADE</field>
+              <field>TABELA</field>
               <field>INDEXADOR</field>
             </fields>
             <where>COD_LOTE=${code_id}</where>
@@ -125,6 +128,8 @@ class SankhyaProvider implements ISankhyaProvider {
           broker_tax: Number(record?.PERCOMCOR[0]),
           franchisee_price: Number(record?.COMFRAN[0]),
           franchisee_tax: Number(record?.PERCOMFRAN[0]),
+          periodicidade: record?.PERIODICIDADE[0],
+          tabela: record?.TABELA[0],
         },
         error: null,
       };

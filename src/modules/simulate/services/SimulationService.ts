@@ -23,6 +23,8 @@ interface IResponse {
   broker_tax: number;
   franchisee_price: number;
   franchisee_tax: number;
+  tabela: string;
+  periodicidade: string;
   name: string;
   block: string;
   enterprise_name: string;

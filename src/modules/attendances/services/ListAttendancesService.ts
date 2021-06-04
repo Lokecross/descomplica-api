@@ -1,3 +1,4 @@
+import ITeamsRepository from '@modules/users/repositories/ITeamsRepository';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import { injectable, inject } from 'tsyringe';
 
@@ -17,6 +18,9 @@ class ListAttendancesService {
 
     @inject('AttendancesRepository')
     private attendancesRepository: IAttendancesRepository,
+
+    @inject('TeamsRepository')
+    private teamsRepository: ITeamsRepository,
   ) {}
 
   public async execute({ userId }: IRequest): Promise<Attendance[]> {
@@ -28,6 +32,25 @@ class ListAttendancesService {
       );
 
       return attendancesByBroker;
+    }
+
+    if (user.role === 'supervisor') {
+      const attendances = await this.attendancesRepository.list();
+
+      const team = await this.teamsRepository.findBySupervisor(user.id);
+
+      const usersByTeam = await this.usersRepository.listByTeam(team.id);
+
+      const usersIdByTeam = usersByTeam.map(item => item.brokerId);
+
+      const attendancesSupervisor = attendances.filter(item => {
+        return (
+          usersIdByTeam.some(brokerId => brokerId === item.brokerId) ||
+          item.brokerId === user.brokerId
+        );
+      });
+
+      return attendancesSupervisor;
     }
 
     const attendances = await this.attendancesRepository.list();
