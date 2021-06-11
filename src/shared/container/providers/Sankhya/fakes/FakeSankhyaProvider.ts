@@ -122,6 +122,7 @@ class FakeSankhyaProvider implements ISankhyaProvider {
       spouse_email: string;
       spouse_cpf: string;
       spouse_name: string;
+      score: string;
     };
     error: string | null;
   }> {
@@ -154,6 +155,7 @@ class FakeSankhyaProvider implements ISankhyaProvider {
         spouse_email: '',
         spouse_cpf: '',
         spouse_name: '',
+        score: '',
       },
       error: null,
     };

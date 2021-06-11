@@ -445,6 +445,7 @@ class SankhyaProvider implements ISankhyaProvider {
       spouse_email: string;
       spouse_cpf: string;
       spouse_name: string;
+      score: string;
     };
     error: string | null;
   }> {
@@ -503,6 +504,7 @@ class SankhyaProvider implements ISankhyaProvider {
           spouse_email: recordPayerCreate?.EMAIL_CONJ[0],
           spouse_cpf: recordPayerCreate?.CPF_CONJ[0],
           spouse_name: recordPayerCreate?.NOME_CONJ[0],
+          score: recordPayerCreate?.SCORE[0],
         },
         error: null,
       };

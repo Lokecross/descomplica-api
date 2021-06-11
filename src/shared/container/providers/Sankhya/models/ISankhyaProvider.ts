@@ -119,6 +119,7 @@ export default interface ISankhyaProvider {
       spouse_email: string;
       spouse_cpf: string;
       spouse_name: string;
+      score: string;
     };
     error: string | null;
   }>;

@@ -62,6 +62,40 @@ class CreateProposalService {
       throw new AppError(simulation.error);
     }
 
+    console.log(
+      simulation.data.tax /
+        100 /
+        (Math.pow(
+          (simulation.data.tax || 1) / 100 + 1,
+          Number(simulate.deadline),
+        ) -
+          1),
+    );
+    console.log(
+      Math.pow(simulation.data.tax / 100 + 1, Number(simulate.deadline)) - 1,
+    );
+    console.log(
+      Math.pow(simulation.data.tax / 100 + 1, Number(simulate.deadline)) - 1,
+    );
+    console.log(
+      `${
+        (parseFloat(
+          `${simulate.price}`.replace(/[^0-9,]/g, '').replace(',', '.'),
+        ) *
+          ((Math.pow(
+            (simulation.data.tax || 1) / 100 + 1,
+            Number(simulate.deadline),
+          ) *
+            ((simulation.data.tax || 1) / 100)) /
+            (Math.pow(
+              (simulation.data.tax || 1) / 100 + 1,
+              Number(simulate.deadline),
+            ) -
+              1))) /
+        100
+      }`,
+    );
+
     const contract = await this.sankhyaProvider.createContract({
       admin: `${simulation.data.admin_price}`,
       corretor: `${simulation.data.broker_price}`,
@@ -93,12 +127,12 @@ class CreateProposalService {
                 `${simulate.price}`.replace(/[^0-9,]/g, '').replace(',', '.'),
               ) *
                 ((Math.pow(
-                  simulation.data.tax / 100 + 1,
+                  (simulation.data.tax || 1) / 100 + 1,
                   Number(simulate.deadline),
                 ) *
-                  (simulation.data.tax / 100)) /
+                  ((simulation.data.tax || 1) / 100)) /
                   (Math.pow(
-                    simulation.data.tax / 100 + 1,
+                    (simulation.data.tax || 1) / 100 + 1,
                     Number(simulate.deadline),
                   ) -
                     1))) /
